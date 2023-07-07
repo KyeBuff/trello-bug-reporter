@@ -1,2 +1,5 @@
-export { default as sum } from './sum';
-export { default as subtract } from './subtract';
+declare class LunarBugTool extends HTMLElement {
+}
+declare const domNode: HTMLElement;
+declare const shadowRoot: ShadowRoot;
+declare const heading: HTMLHeadingElement;

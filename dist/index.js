@@ -1,10 +1,7 @@
-function r(t, n) {
-  return t + n;
+class t extends HTMLElement {
 }
-function u(t, n) {
-  return t - n;
-}
-export {
-  u as subtract,
-  r as sum
-};
+window.customElements.define("lunar-bug-tool", t);
+const e = document.createElement("lunar-bug-tool"), n = e.attachShadow({ mode: "open" }), o = document.createElement("h1");
+o.textContent = "Hello World!";
+n.appendChild(o);
+document.body.appendChild(e);
