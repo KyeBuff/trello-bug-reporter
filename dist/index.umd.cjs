@@ -1,0 +1,1 @@
+(function(e,n){typeof exports=="object"&&typeof module<"u"?n(exports):typeof define=="function"&&define.amd?define(["exports"],n):(e=typeof globalThis<"u"?globalThis:e||self,n(e.index={}))})(this,function(e){"use strict";function n(t,i){return t+i}function u(t,i){return t-i}e.subtract=u,e.sum=n,Object.defineProperty(e,Symbol.toStringTag,{value:"Module"})});
