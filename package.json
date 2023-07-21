@@ -13,6 +13,7 @@
   },
   "scripts": {
     "dev": "vite",
+    "watch": "tsc && vite build --watch",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
@@ -21,5 +22,15 @@
     "typescript": "^5.0.2",
     "vite": "^4.4.0",
     "vite-plugin-dts": "^3.1.1"
-  }
+  },
+  "dependencies": {
+    "@babel/plugin-transform-runtime": "^7.22.9",
+    "@babel/preset-env": "^7.22.9",
+    "@rollup/plugin-babel": "^6.0.3",
+    "hybrids": "^8.2.2"
+  },
+  "browserslist": [
+    "> 0.5%",
+    "not dead"
+  ]
 }
