@@ -1,55 +1,60 @@
-const Xe = /* @__PURE__ */ new Map();
-function oe(e) {
-  let t = Xe.get(e);
-  return t === void 0 && (t = e.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase(), Xe.set(e, t)), t;
+const He = /* @__PURE__ */ new Map();
+function se(e) {
+  let t = He.get(e);
+  return t === void 0 && (t = e.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase(), He.set(e, t)), t;
 }
-function de(e) {
+function he(e) {
   return `<${String(e.tagName).toLowerCase()}>`;
 }
-function ge(e, t) {
-  e.nodeType === globalThis.Node.ELEMENT_NODE && (t(e), e.shadowRoot && ge(e.shadowRoot, t));
-  const n = globalThis.document.createTreeWalker(e, globalThis.NodeFilter.SHOW_ELEMENT, null, !1);
+function be(e, t) {
+  e.nodeType === globalThis.Node.ELEMENT_NODE && (t(e), e.shadowRoot && be(e.shadowRoot, t));
+  const n = globalThis.document.createTreeWalker(
+    e,
+    globalThis.NodeFilter.SHOW_ELEMENT,
+    null,
+    !1
+  );
   for (; n.nextNode(); ) {
-    const r = n.currentNode;
-    t(r), r.shadowRoot && ge(r.shadowRoot, t);
+    const o = n.currentNode;
+    t(o), o.shadowRoot && be(o.shadowRoot, t);
   }
 }
-const be = Promise.resolve(), ke = /* @__PURE__ */ new WeakMap(), Ae = ge.name === "walkInShadow", U = /* @__PURE__ */ new Set();
-function pt(e) {
-  U.size || be.then(Rt), U.add(e);
+const we = Promise.resolve(), Ve = /* @__PURE__ */ new WeakMap(), Re = be.name === "walkInShadow", Q = /* @__PURE__ */ new Set();
+function vt(e) {
+  Q.size || we.then(Xt), Q.add(e);
 }
-function Wt(e) {
-  U.delete(e);
+function Ut(e) {
+  Q.delete(e);
 }
-function Rt() {
-  for (const e of U)
+function Xt() {
+  for (const e of Q)
     try {
       e();
     } catch (t) {
       console.error(t);
     }
-  U.clear();
+  Q.clear();
 }
-const Y = /* @__PURE__ */ new WeakMap(), q = /* @__PURE__ */ new Set();
-function ht(e) {
+const Z = /* @__PURE__ */ new WeakMap(), G = /* @__PURE__ */ new Set();
+function Tt(e) {
   const t = /* @__PURE__ */ new Set(), n = t.values();
   for (; e; ) {
     if (e.resolved = !1, e.deps) {
-      for (const r of e.deps)
-        r.contexts.delete(e);
+      for (const o of e.deps)
+        o.contexts.delete(e);
       e.deps.clear();
     }
     if (e.contexts)
-      for (const r of e.contexts)
-        q.has(r) || (t.add(r), e.contexts.delete(r));
-    e.observe && pt(e.observe), e = n.next().value;
+      for (const o of e.contexts)
+        G.has(o) || (t.add(o), e.contexts.delete(o));
+    e.observe && vt(e.observe), e = n.next().value;
   }
 }
-function _(e, t) {
-  let n = Y.get(e);
-  n || (n = /* @__PURE__ */ new Map(), Y.set(e, n));
-  let r = n.get(t);
-  return r || (r = {
+function B(e, t) {
+  let n = Z.get(e);
+  n || (n = /* @__PURE__ */ new Map(), Z.set(e, n));
+  let o = n.get(t);
+  return o || (o = {
     key: t,
     target: e,
     value: void 0,
@@ -58,402 +63,413 @@ function _(e, t) {
     contexts: void 0,
     deps: void 0,
     observe: void 0
-  }, n.set(t, r)), r;
+  }, n.set(t, o)), o;
 }
-function mt(e) {
-  const t = Y.get(e);
+function $t(e) {
+  const t = Z.get(e);
   return t ? [...t.values()] : [];
 }
-let x = null;
-function D(e, t, n) {
-  const r = _(e, t);
-  if (x && (r.contexts || (r.contexts = /* @__PURE__ */ new Set()), x.deps || (x.deps = /* @__PURE__ */ new Set()), r.contexts.add(x), x.deps.add(r)), r.resolved)
-    return r.value;
-  const s = x;
+let j = null;
+function W(e, t, n) {
+  const o = B(e, t);
+  if (j && (o.contexts || (o.contexts = /* @__PURE__ */ new Set()), j.deps || (j.deps = /* @__PURE__ */ new Set()), o.contexts.add(j), j.deps.add(o)), o.resolved)
+    return o.value;
+  const i = j;
   try {
-    if (q.has(r))
+    if (G.has(o))
       throw Error(`Circular get invocation is forbidden: '${t}'`);
-    x = r, q.add(r), r.value = n(e, r.value), r.resolved = !0, x = s, q.delete(r);
-  } catch (o) {
-    throw x = s, q.delete(r), x && (x.deps.delete(r), r.contexts.delete(x)), o;
+    j = o, G.add(o), o.value = n(e, o.value), o.resolved = !0, j = i, G.delete(o);
+  } catch (r) {
+    throw j = i, G.delete(o), j && (j.deps.delete(o), o.contexts.delete(j)), r;
   }
-  return r.value;
+  return o.value;
 }
-function ye(e, t, n, r) {
-  const s = _(e, t), o = n(e, r, s.value);
-  o !== s.value && (s.value = o, ht(s));
+function ve(e, t, n, o) {
+  const i = B(e, t), r = n(e, o, i.value);
+  r !== i.value && (i.value = r, Tt(i));
 }
-function It(e, t, n, r) {
-  const s = _(e, t);
-  s.observe = () => {
-    const o = D(e, t, n);
-    o !== s.lastValue && (r(e, o, s.lastValue), s.lastValue = o);
+function Jt(e, t, n, o) {
+  const i = B(e, t);
+  i.observe = () => {
+    const r = W(e, t, n);
+    r !== i.lastValue && (o(e, r, i.lastValue), i.lastValue = r);
   };
   try {
-    s.observe();
-  } catch (o) {
-    console.error(o);
+    i.observe();
+  } catch (r) {
+    console.error(r);
   }
   return () => {
-    Wt(s.observe), s.observe = void 0, s.lastValue = void 0;
+    Ut(i.observe), i.observe = void 0, i.lastValue = void 0;
   };
 }
-const le = /* @__PURE__ */ new Set();
-function Dt(e) {
-  le.size || setTimeout(() => {
-    for (const t of le)
+const ce = /* @__PURE__ */ new Set();
+function qt(e) {
+  ce.size || setTimeout(() => {
+    for (const t of ce)
       if (!t.contexts || t.contexts.size === 0) {
         if (t.deps)
-          for (const r of t.deps)
-            r.contexts.delete(t);
-        Y.get(t.target).delete(t.key);
+          for (const o of t.deps)
+            o.contexts.delete(t);
+        Z.get(t.target).delete(t.key);
       }
-    le.clear();
-  }), le.add(e);
+    ce.clear();
+  }), ce.add(e);
 }
-function bt(e, t) {
-  ht(e), t.clearValue && (e.value = void 0, e.lastValue = void 0), t.deleteEntry && Dt(e);
+function St(e, t) {
+  Tt(e), t.clearValue && (e.value = void 0, e.lastValue = void 0), t.deleteEntry && qt(e);
 }
-function we(e, t) {
-  let n = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : {};
-  const r = _(e, t);
-  bt(r, n);
+function Te(e, t, n = {}) {
+  const o = B(e, t);
+  St(o, n);
 }
-function yt(e) {
-  let t = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
-  const n = Y.get(e);
+function Et(e, t = {}) {
+  const n = Z.get(e);
   if (n)
-    for (const r of n.values())
-      bt(r, t);
+    for (const o of n.values())
+      St(o, t);
 }
-function Ke(e, t) {
+function Ye(e, t) {
   return {
     get: t ? (n) => {
-      const r = e(n), s = n.shadowRoot || n.attachShadow({
+      const o = e(n), i = n.shadowRoot || n.attachShadow({
         mode: "open",
         delegatesFocus: e.delegatesFocus || !1
       });
-      return () => (r(n, s), s);
+      return () => (o(n, i), i);
     } : (n) => {
-      const r = e(n);
-      return () => (r(n, n), n);
+      const o = e(n);
+      return () => (o(n, n), n);
     },
-    observe(n, r) {
-      r();
+    observe(n, o) {
+      o();
     }
   };
 }
-const wt = {
+const xt = {
   string: (e, t, n) => {
-    const r = t ? String(t) : "";
-    return r ? e.setAttribute(n, r) : e.removeAttribute(n), r;
+    const o = t ? String(t) : "";
+    return o ? e.setAttribute(n, o) : e.removeAttribute(n), o;
   },
   number: (e, t, n) => {
-    const r = Number(t);
-    return e.setAttribute(n, r), r;
+    const o = Number(t);
+    return e.setAttribute(n, o), o;
   },
   boolean: (e, t, n) => {
-    const r = !!t;
-    return r ? e.setAttribute(n, "") : e.removeAttribute(n), r;
+    const o = !!t;
+    return o ? e.setAttribute(n, "") : e.removeAttribute(n), o;
   },
   undefined: (e, t, n) => {
-    const r = typeof t, s = r !== "undefined" && wt[r];
-    return s ? s(e, t, n) : (e.hasAttribute(n) && e.removeAttribute(n), t);
+    const o = typeof t, i = o !== "undefined" && xt[o];
+    return i ? i(e, t, n) : (e.hasAttribute(n) && e.removeAttribute(n), t);
   }
-}, kt = {
+}, Kt = {
   string: (e, t) => e.getAttribute(t),
   number: (e, t) => Number(e.getAttribute(t)) || 0,
   boolean: (e, t) => e.hasAttribute(t),
   undefined: (e, t) => e.getAttribute(t)
 };
-function _t(e, t) {
-  const n = typeof t.value, r = wt[n], s = kt[n];
-  if (!r)
-    throw TypeError(`Invalid default value for '${e}' property - it must be a string, number, boolean or undefined: ${n}`);
-  const o = oe(e);
+function Gt(e, t) {
+  const n = typeof t.value, o = xt[n], i = Kt[n];
+  if (!o)
+    throw TypeError(
+      `Invalid default value for '${e}' property - it must be a string, number, boolean or undefined: ${n}`
+    );
+  const r = se(e);
   return {
-    get: (i, a) => a === void 0 ? s(i, o) || t.value : a,
-    set: (i, a) => r(i, a, o),
-    connect: n !== "undefined" ? (i, a, c) => (!i.hasAttribute(o) && i[a] === t.value && (i[a] = r(i, t.value, o)), t.connect && t.connect(i, a, c)) : t.connect,
+    get: (s, c) => c === void 0 ? i(s, r) || t.value : c,
+    set: (s, c) => o(s, c, r),
+    connect: n !== "undefined" ? (s, c, f) => (!s.hasAttribute(r) && s[c] === t.value && (s[c] = o(s, t.value, r)), t.connect && t.connect(s, c, f)) : t.connect,
     observe: t.observe
   };
 }
-const Q = /* @__PURE__ */ new WeakMap(), ae = /* @__PURE__ */ new WeakMap();
-function Le(e, t) {
+const ee = /* @__PURE__ */ new WeakMap(), fe = /* @__PURE__ */ new WeakMap();
+function Me(e, t) {
   if (t) {
-    const o = Q.get(t);
-    if (e === o)
+    const r = ee.get(t);
+    if (e === r)
       return t;
-    for (const i of Object.keys(o))
-      i !== "tag" && delete t.prototype[i];
+    for (const s of Object.keys(r))
+      s !== "tag" && delete t.prototype[s];
   } else
     t = class extends globalThis.HTMLElement {
       connectedCallback() {
-        for (const i of t.settable) {
-          if (!hasOwnProperty.call(this, i))
+        for (const s of t.settable) {
+          if (!hasOwnProperty.call(this, s))
             continue;
-          const a = this[i];
-          delete this[i], this[i] = a;
+          const c = this[s];
+          delete this[s], this[s] = c;
         }
-        const o = /* @__PURE__ */ new Set();
-        ae.set(this, o), pt(() => {
-          if (o === ae.get(this)) {
-            for (const i of t.connects)
-              o.add(i(this));
-            for (const i of t.observers)
-              o.add(i(this));
+        const r = /* @__PURE__ */ new Set();
+        fe.set(this, r), vt(() => {
+          if (r === fe.get(this)) {
+            for (const s of t.connects)
+              r.add(s(this));
+            for (const s of t.observers)
+              r.add(s(this));
           }
         });
       }
       disconnectedCallback() {
-        const o = ae.get(this);
-        for (const i of o)
-          i && i();
-        ae.delete(this), yt(this);
+        const r = fe.get(this);
+        for (const s of r)
+          s && s();
+        fe.delete(this), Et(this);
       }
     };
-  Q.set(t, Object.freeze(e));
-  const n = /* @__PURE__ */ new Set(), r = /* @__PURE__ */ new Set(), s = /* @__PURE__ */ new Set();
-  for (const o of Object.keys(e)) {
-    if (o === "tag")
+  ee.set(t, Object.freeze(e));
+  const n = /* @__PURE__ */ new Set(), o = /* @__PURE__ */ new Set(), i = /* @__PURE__ */ new Set();
+  for (const r of Object.keys(e)) {
+    if (r === "tag")
       continue;
-    let i = e[o];
-    const a = typeof i;
-    if (a === "function")
-      o === "render" ? i = Ke(i, !0) : o === "content" ? i = Ke(i) : i = {
-        get: i
-      };
-    else if (a !== "object" || i === null)
-      i = {
-        value: i
-      };
-    else if (i.set) {
-      if (hasOwnProperty.call(i, "value"))
-        throw TypeError(`Invalid property descriptor for '${o}' property - it must not have 'value' and 'set' properties at the same time.`);
-      const c = oe(o), p = i.get || ((d, l) => l);
-      i.get = (d, l) => (l === void 0 && (l = i.set(d, d.getAttribute(c) || l)), p(d, l));
+    let s = e[r];
+    const c = typeof s;
+    if (c === "function")
+      r === "render" ? s = Ye(s, !0) : r === "content" ? s = Ye(s) : s = { get: s };
+    else if (c !== "object" || s === null)
+      s = { value: s };
+    else if (s.set) {
+      if (hasOwnProperty.call(s, "value"))
+        throw TypeError(
+          `Invalid property descriptor for '${r}' property - it must not have 'value' and 'set' properties at the same time.`
+        );
+      const f = se(r), h = s.get || ((b, l) => l);
+      s.get = (b, l) => (l === void 0 && (l = s.set(b, b.getAttribute(f) || l)), h(b, l));
     }
-    if (hasOwnProperty.call(i, "value"))
-      i = _t(o, i);
-    else if (!i.get)
-      throw TypeError(`Invalid descriptor for '${o}' property - it must contain 'value' or 'get' option`);
-    i.set && s.add(o), Object.defineProperty(t.prototype, o, {
+    if (hasOwnProperty.call(s, "value"))
+      s = Gt(r, s);
+    else if (!s.get)
+      throw TypeError(
+        `Invalid descriptor for '${r}' property - it must contain 'value' or 'get' option`
+      );
+    s.set && i.add(r), Object.defineProperty(t.prototype, r, {
       get: function() {
-        return D(this, o, i.get);
+        return W(this, r, s.get);
       },
-      set: i.set && function(p) {
-        ye(this, o, i.set, p);
+      set: s.set && function(h) {
+        ve(this, r, s.set, h);
       },
       enumerable: !0,
       configurable: !0
-    }), i.connect && n.add((c) => i.connect(c, o, () => {
-      we(c, o);
-    })), i.observe && r.add((c) => It(c, o, i.get, i.observe));
+    }), s.connect && n.add(
+      (f) => s.connect(f, r, () => {
+        Te(f, r);
+      })
+    ), s.observe && o.add((f) => Jt(f, r, s.get, s.observe));
   }
-  return t.connects = n, t.observers = r, t.settable = s, t;
+  return t.connects = n, t.observers = o, t.settable = i, t;
 }
-const X = /* @__PURE__ */ new Map();
-function Vt(e) {
-  X.size || be.then(() => {
-    ge(globalThis.document.body, (t) => {
-      if (X.has(t.constructor)) {
-        const n = X.get(t.constructor), r = Q.get(t.constructor);
+const q = /* @__PURE__ */ new Map();
+function Ht(e) {
+  q.size || we.then(() => {
+    be(globalThis.document.body, (t) => {
+      if (q.has(t.constructor)) {
+        const n = q.get(t.constructor), o = ee.get(t.constructor);
         t.disconnectedCallback();
-        for (const s of Object.keys(r)) {
-          const o = typeof r[s], i = o !== "object" && o !== "function" && r[s] !== n[s];
-          i && t.removeAttribute(oe(s)), we(t, s, {
-            clearValue: i
-          });
+        for (const i of Object.keys(o)) {
+          const r = typeof o[i], s = r !== "object" && r !== "function" && o[i] !== n[i];
+          s && t.removeAttribute(se(i)), Te(t, i, { clearValue: s });
         }
         t.connectedCallback();
       }
-    }), X.clear();
-  }), X.set(e, Q.get(e));
+    }), q.clear();
+  }), q.set(e, ee.get(e));
 }
-function vt(e) {
+function Ot(e) {
   if (!e.tag)
-    throw TypeError("Error while defining hybrids: 'tag' property with dashed tag name is required");
+    throw TypeError(
+      "Error while defining hybrids: 'tag' property with dashed tag name is required"
+    );
   const t = globalThis.customElements.get(e.tag);
   if (t) {
-    if (Q.get(t))
-      return Vt(t), Le(e, t), e;
-    throw TypeError(`Custom element with '${e.tag}' tag name already defined outside of the hybrids context`);
+    if (ee.get(t))
+      return Ht(t), Me(e, t), e;
+    throw TypeError(
+      `Custom element with '${e.tag}' tag name already defined outside of the hybrids context`
+    );
   }
-  return globalThis.customElements.define(e.tag, Le(e)), e;
+  return globalThis.customElements.define(e.tag, Me(e)), e;
 }
-function Bt(e) {
-  let {
-    root: t = "",
-    prefix: n
-  } = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
-  for (const r of Object.keys(e)) {
-    const s = e[r];
-    if (!s.tag) {
-      const o = oe([].concat(t).reduce((i, a) => i.replace(a, ""), r).replace(/^[./]+/, "").replace(/\//g, "-").replace(/\.[a-zA-Z]+$/, ""));
-      s.tag = n ? `${n}-${o}` : o;
+function Yt(e, { root: t = "", prefix: n } = {}) {
+  for (const o of Object.keys(e)) {
+    const i = e[o];
+    if (!i.tag) {
+      const r = se(
+        [].concat(t).reduce((s, c) => s.replace(c, ""), o).replace(/^[./]+/, "").replace(/\//g, "-").replace(/\.[a-zA-Z]+$/, "")
+      );
+      i.tag = n ? `${n}-${r}` : r;
     }
-    vt(s);
+    Ot(i);
   }
   return e;
 }
-const Tt = Object.freeze(Object.assign(vt, {
-  compile: (e) => Le(e),
-  from: Bt
-})), _e = Symbol("store.connect"), S = /* @__PURE__ */ new WeakMap(), ve = /* @__PURE__ */ new WeakMap(), $t = /* @__PURE__ */ new WeakSet();
-function Ve(e, t, n) {
-  if (n && (S.set(n, null), ve.set(n, t)), S.set(t, e), e.storage.observe) {
-    const r = t && e.isInstance(t) ? t : null, s = n && e.isInstance(n) ? n : null;
-    r !== s && e.storage.observe(r, s);
+const Ue = Object.freeze(
+  Object.assign(Ot, {
+    compile: (e) => Me(e),
+    from: Yt
+  })
+), Xe = Symbol("store.connect"), x = /* @__PURE__ */ new WeakMap(), $e = /* @__PURE__ */ new WeakMap(), Nt = /* @__PURE__ */ new WeakSet();
+function Je(e, t, n) {
+  if (n && (x.set(n, null), $e.set(n, t)), x.set(t, e), e.storage.observe) {
+    const o = t && e.isInstance(t) ? t : null, i = n && e.isInstance(n) ? n : null;
+    o !== i && e.storage.observe(o, i);
   }
   return t;
 }
-function Ft(e, t) {
+function Qt(e, t) {
   return Object.keys(e).every((n) => e[n] === t[n]);
 }
-function Jt(e, t, n) {
-  return Ve(e, t, n), e.invalidate && (!n || ie(t) || !e.isInstance(n) || !Ft(t, n)) && e.invalidate(), t;
+function Zt(e, t, n) {
+  return Je(e, t, n), e.invalidate && (!n || ae(t) || !e.isInstance(n) || !Qt(t, n)) && e.invalidate(), t;
 }
-function k(e, t, n) {
-  let r = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : !0;
-  return ye(e, t, r ? Jt : Ve, n), n;
+function I(e, t, n, o = !0) {
+  return ve(e, t, o ? Zt : Je, n), n;
 }
 let ue;
-function O() {
-  return ue || (ue = Date.now(), be.then(() => {
+function P() {
+  return ue || (ue = Date.now(), we.then(() => {
     ue = void 0;
   })), ue;
 }
-const pe = /* @__PURE__ */ new WeakMap();
-function $e(e) {
-  let t = pe.get(e);
-  return t || (t = O(), pe.set(e, t)), t;
+const me = /* @__PURE__ */ new WeakMap();
+function xe(e) {
+  let t = me.get(e);
+  return t || (t = P(), me.set(e, t)), t;
 }
-function Ee(e) {
-  return pe.set(e, O()), e;
+function Oe(e) {
+  return me.set(e, P()), e;
 }
-function qe(e) {
-  return pe.set(e, 1), e;
+function Qe(e) {
+  return me.set(e, 1), e;
 }
-function Me(e) {
-  return globalThis.btoa(Array.from(e).reduce((t, n) => Math.imul(31, t) + n.charCodeAt(0) | 0, 0));
+function _e(e) {
+  return globalThis.btoa(
+    Array.from(e).reduce(
+      (t, n) => Math.imul(31, t) + n.charCodeAt(0) | 0,
+      0
+    )
+  );
 }
-const Se = "hybrids:store:cache", xe = {};
-let Oe;
-function Xt(e, t) {
-  const n = `${Se}:${Me(JSON.stringify(e.model))}`;
-  return xe[n] = O() + t, Oe || (Oe = Promise.resolve().then(() => {
-    const r = JSON.parse(globalThis.localStorage.getItem(Se)) || {}, s = O();
-    for (const o of Object.keys(r))
-      !xe[o] && r[o] < s && (globalThis.localStorage.removeItem(o), delete r[o]);
-    globalThis.localStorage.setItem(Se, JSON.stringify({
-      ...r,
-      ...xe
-    })), Oe = null;
+const Ne = "hybrids:store:cache", je = {};
+let Ce;
+function en(e, t) {
+  const n = `${Ne}:${_e(JSON.stringify(e.model))}`;
+  return je[n] = P() + t, Ce || (Ce = Promise.resolve().then(() => {
+    const o = JSON.parse(globalThis.localStorage.getItem(Ne)) || {}, i = P();
+    for (const r of Object.keys(o))
+      !je[r] && o[r] < i && (globalThis.localStorage.removeItem(r), delete o[r]);
+    globalThis.localStorage.setItem(
+      Ne,
+      JSON.stringify({ ...o, ...je })
+    ), Ce = null;
   })), n;
 }
-const Kt = /^\{.+\}$/;
-function Et(e, t) {
-  typeof t == "function" && (t = {
-    get: t
-  });
+const tn = /^\{.+\}$/;
+function jt(e, t) {
+  typeof t == "function" && (t = { get: t });
   const n = {
     cache: !0,
     loose: !1,
     ...t
   };
   if (n.observe) {
-    const r = n.observe;
-    if (typeof r != "function")
-      throw TypeError(`Storage 'observe' property must be a function: ${typeof n.observe}`);
-    n.observe = (s, o) => {
+    const o = n.observe;
+    if (typeof o != "function")
+      throw TypeError(
+        `Storage 'observe' property must be a function: ${typeof n.observe}`
+      );
+    n.observe = (i, r) => {
       try {
-        let i = o ? o.id : s.id;
-        if (Kt.test(i))
+        let s = r ? r.id : i.id;
+        if (tn.test(s))
           try {
-            i = JSON.parse(i);
+            s = JSON.parse(s);
           } catch {
           }
-        r(i, s, o);
-      } catch (i) {
-        console.error(i);
+        o(s, i, r);
+      } catch (s) {
+        console.error(s);
       }
     };
   }
   if (n.cache === !1 || n.cache === 0)
-    n.validate = (r) => !r || $e(r) === O();
+    n.validate = (o) => !o || xe(o) === P();
   else if (typeof n.cache == "number")
-    n.validate = (r) => !r || $e(r) + n.cache > O();
+    n.validate = (o) => !o || xe(o) + n.cache > P();
   else {
     if (n.cache !== !0)
-      throw TypeError(`Storage 'cache' property must be a boolean or number: ${typeof n.cache}`);
-    n.validate = (r) => $e(r) !== 1;
+      throw TypeError(
+        `Storage 'cache' property must be a boolean or number: ${typeof n.cache}`
+      );
+    n.validate = (o) => xe(o) !== 1;
   }
-  if (n.get || (n.get = (r) => {
-    throw ee(Z(r));
+  if (n.get || (n.get = (o) => {
+    throw ne(te(o));
   }), n.offline)
     try {
-      const r = n.offline === !0, s = r ? 1e3 * 60 * 60 * 24 * 30 : n.offline, o = Xt(e, s), i = JSON.parse(globalThis.localStorage.getItem(o)) || {};
-      let a;
+      const o = n.offline === !0, i = o ? 1e3 * 60 * 60 * 24 * 30 : n.offline, r = en(e, i), s = JSON.parse(globalThis.localStorage.getItem(r)) || {};
+      let c;
       n.offline = Object.freeze({
-        key: o,
-        threshold: s,
-        get: r ? (c) => hasOwnProperty.call(i, c) ? JSON.parse(i[c][1]) : null : (c) => {
-          if (hasOwnProperty.call(i, c)) {
-            const p = i[c];
-            return p[0] + s < O() ? (delete i[c], null) : JSON.parse(p[1]);
+        key: r,
+        threshold: i,
+        get: o ? (f) => hasOwnProperty.call(s, f) ? JSON.parse(s[f][1]) : null : (f) => {
+          if (hasOwnProperty.call(s, f)) {
+            const h = s[f];
+            return h[0] + i < P() ? (delete s[f], null) : JSON.parse(h[1]);
           }
           return null;
         },
-        set(c, p) {
-          return p ? i[c] = [O(), JSON.stringify(p, function(l, u) {
-            if (u === this[""])
-              return u;
-            if (u && typeof u == "object") {
-              const h = S.get(u);
-              if (h === e && u.id === c)
-                return String(u);
-              if (h && h.storage.offline)
-                return h.list ? u.map((g) => (he.get(h.model).storage.offline.set(g.id, g), `${g}`)) : (h.storage.offline.set(u.id, u), `${u}`);
-            }
-            return u;
-          })] : delete i[c], a || (a = Promise.resolve().then(() => {
-            const d = O();
-            for (const l of Object.keys(i))
-              i[l][0] + s < d && delete i[l];
-            globalThis.localStorage.setItem(o, JSON.stringify(i)), a = null;
-          })), p;
+        set(f, h) {
+          return h ? s[f] = [
+            P(),
+            JSON.stringify(h, function(l, a) {
+              if (a === this[""])
+                return a;
+              if (a && typeof a == "object") {
+                const p = x.get(a);
+                if (p === e && a.id === f)
+                  return String(a);
+                if (p && p.storage.offline)
+                  return p.list ? a.map((d) => (ge.get(p.model).storage.offline.set(d.id, d), `${d}`)) : (p.storage.offline.set(a.id, a), `${a}`);
+              }
+              return a;
+            })
+          ] : delete s[f], c || (c = Promise.resolve().then(() => {
+            const b = P();
+            for (const l of Object.keys(s))
+              s[l][0] + i < b && delete s[l];
+            globalThis.localStorage.setItem(
+              r,
+              JSON.stringify(s)
+            ), c = null;
+          })), h;
         }
       });
-    } catch (r) {
-      console.error("Error while setup offline cache", r), n.offline = !1;
+    } catch (o) {
+      console.error("Error while setup offline cache", o), n.offline = !1;
     }
   return Object.freeze(n);
 }
-function qt(e) {
+function nn(e) {
   return {
     get: e.enumerable ? () => {
     } : () => e.create({}),
-    set: e.enumerable ? (t, n) => n : (t, n) => n === null ? {
-      id: t
-    } : n,
+    set: e.enumerable ? (t, n) => n : (t, n) => n === null ? { id: t } : n,
     list: e.enumerable && function(n) {
       if (n)
         throw TypeError("Memory-based model definition does not support id");
-      const r = [];
-      for (const {
-        key: s,
-        value: o
-      } of mt(e))
-        s !== e && o && !ie(o) && r.push(s);
-      return r;
+      const o = [];
+      for (const { key: i, value: r } of $t(e))
+        i !== e && r && !ae(r) && o.push(i);
+      return o;
     },
     loose: !0
   };
 }
-function z(e, t) {
-  return Array.isArray(e) ? Zt(e[0], t) : Ot(e, t);
+function M(e, t) {
+  return Array.isArray(e) ? cn(e[0], t) : At(e, t);
 }
-function Ge(e, t) {
+function Ze(e, t) {
   switch (e) {
     case "string":
       return (n) => n != null ? String(n) : "";
@@ -462,197 +478,214 @@ function Ge(e, t) {
     case "boolean":
       return Boolean;
     default:
-      throw TypeError(`The value of the '${t}' must be a string, number or boolean: ${e}`);
+      throw TypeError(
+        `The value of the '${t}' must be a string, number or boolean: ${e}`
+      );
   }
 }
-const Gt = (e, t, n) => t.state === "error" ? {
-  state: "error",
-  error: t.value
-} : (t.error = !!n && n.error, t);
-function M(e, t) {
-  let n = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : e;
-  return ye(e, "state", Gt, {
-    state: t,
-    value: n
-  }), e;
+const on = (e, t, n) => t.state === "error" ? { state: "error", error: t.value } : (t.error = !!n && n.error, t);
+function R(e, t, n = e) {
+  return ve(e, "state", on, { state: t, value: n }), e;
 }
-const Ht = function(e) {
-  return arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {
-    state: "ready",
-    value: e,
-    error: !1
-  };
-};
-function se(e) {
-  return D(e, "state", Ht);
+const rn = (e, t = { state: "ready", value: e, error: !1 }) => t;
+function le(e) {
+  return W(e, "state", rn);
 }
-function St(e) {
-  return e ? (e ^ Math.random() * 16 >> e / 4).toString(16) : ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, St);
+function Ct(e) {
+  return e ? (e ^ Math.random() * 16 >> e / 4).toString(16) : ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, Ct);
 }
-function Ut(e) {
+function sn(e) {
   if (typeof e != "function")
     throw TypeError(`The first argument must be a function: ${typeof e}`);
-  return $t.add(e), e;
+  return Nt.add(e), e;
 }
-const xt = /* @__PURE__ */ new WeakMap();
-function Yt(e, t, n) {
-  let r = n.model[t];
-  $t.has(r) && (r = r());
-  let s = typeof r;
-  if (r instanceof String || r instanceof Number || r instanceof Boolean) {
-    const o = xt.get(r);
-    if (!o)
-      throw TypeError(j(e, `You must use primitive ${typeof r.valueOf()} value for '${t}' property of the provided model definition`));
-    r = r.valueOf(), s = typeof r, n.checks.set(t, o);
+const Pt = /* @__PURE__ */ new WeakMap();
+function ln(e, t, n) {
+  let o = n.model[t];
+  Nt.has(o) && (o = o());
+  let i = typeof o;
+  if (o instanceof String || o instanceof Number || o instanceof Boolean) {
+    const r = Pt.get(o);
+    if (!r)
+      throw TypeError(
+        L(
+          e,
+          `You must use primitive ${typeof o.valueOf()} value for '${t}' property of the provided model definition`
+        )
+      );
+    o = o.valueOf(), i = typeof o, n.checks.set(t, r);
   }
-  return {
-    defaultValue: r,
-    type: s
-  };
+  return { defaultValue: o, type: i };
 }
-function j(e, t) {
+function L(e, t) {
   return `${t}
 
 Model = ${JSON.stringify(e, null, 2)}
 `;
 }
-const Qt = Promise.resolve(), he = /* @__PURE__ */ new WeakMap();
-function Ot(e, t) {
+const an = Promise.resolve(), ge = /* @__PURE__ */ new WeakMap();
+function At(e, t) {
   if (typeof e != "object" || e === null)
     throw TypeError(`Model definition must be an object: ${typeof e}`);
-  let n = he.get(e);
+  let n = ge.get(e);
   if (n && !n.enumerable) {
     if (t && !n.nested)
-      throw TypeError(j(e, "Provided model definition for nested object already used as a root definition"));
+      throw TypeError(
+        L(
+          e,
+          "Provided model definition for nested object already used as a root definition"
+        )
+      );
     if (!t && n.nested)
-      throw TypeError(j(e, "Nested model definition cannot be used outside of the parent definition"));
+      throw TypeError(
+        L(
+          e,
+          "Nested model definition cannot be used outside of the parent definition"
+        )
+      );
   }
   if (!n) {
-    const r = e[_e];
-    typeof r == "object" && Object.freeze(r);
-    let s;
-    const o = hasOwnProperty.call(e, "id"), i = !!r, a = /* @__PURE__ */ new Map(), c = {};
-    Object.defineProperty(c, "toString", {
+    const o = e[Xe];
+    typeof o == "object" && Object.freeze(o);
+    let i;
+    const r = hasOwnProperty.call(e, "id"), s = !!o, c = /* @__PURE__ */ new Map(), f = {};
+    Object.defineProperty(f, "toString", {
       value: function() {
         return this.id;
       }
     });
-    const p = Object.create(c);
+    const h = Object.create(f);
     n = {
       model: e,
-      external: i,
-      enumerable: o,
-      nested: !o && !i && t,
+      external: s,
+      enumerable: r,
+      nested: !r && !s && t,
       placeholder: (l) => {
-        const u = Object.create(p);
-        return S.set(u, n), o && (u.id = l), Object.freeze(u);
+        const a = Object.create(h);
+        return x.set(a, n), r && (a.id = l), Object.freeze(a);
       },
-      isInstance: (l) => Object.getPrototypeOf(l) !== p,
+      isInstance: (l) => Object.getPrototypeOf(l) !== h,
       invalidate: () => {
-        s || (s = Qt.then(() => {
-          we(n, n, {
-            clearValue: !0
-          }), s = null;
+        i || (i = an.then(() => {
+          Te(n, n, { clearValue: !0 }), i = null;
         }));
       },
-      checks: a
-    }, he.set(e, n), n.storage = Et(n, r || qt(n));
-    const d = Object.keys(Object.freeze(e)).map((l) => {
-      if (l !== "id" && Object.defineProperty(p, l, {
+      checks: c
+    }, ge.set(e, n), n.storage = jt(n, o || nn(n));
+    const b = Object.keys(Object.freeze(e)).map((l) => {
+      if (l !== "id" && Object.defineProperty(h, l, {
         get() {
-          throw Error(`Model instance in ${se(this).state} state - use store.pending(), store.error(), or store.ready() guards`);
+          throw Error(
+            `Model instance in ${le(this).state} state - use store.pending(), store.error(), or store.ready() guards`
+          );
         },
         enumerable: !0
       }), l === "id") {
         if (e[l] !== !0)
-          throw TypeError("The 'id' property in the model definition must be set to 'true' or not be defined");
-        return (f, g, y) => {
-          let b;
-          hasOwnProperty.call(g, "id") ? b = Z(g.id) : y ? b = y.id : b = St(), Object.defineProperty(f, "id", {
-            value: b,
-            enumerable: !0
-          });
+          throw TypeError(
+            "The 'id' property in the model definition must be set to 'true' or not be defined"
+          );
+        return (u, d, y) => {
+          let g;
+          hasOwnProperty.call(d, "id") ? g = te(d.id) : y ? g = y.id : g = Ct(), Object.defineProperty(u, "id", { value: g, enumerable: !0 });
         };
       }
-      const {
-        defaultValue: u,
-        type: h
-      } = Yt(e, l, n);
-      switch (h) {
+      const { defaultValue: a, type: p } = ln(e, l, n);
+      switch (p) {
         case "function":
-          return (f) => {
-            Object.defineProperty(f, l, {
+          return (u) => {
+            Object.defineProperty(u, l, {
               get() {
-                return D(this, l, () => u(this));
+                return W(this, l, () => a(this));
               }
             });
           };
         case "object": {
-          if (u === null)
-            throw TypeError(`The value for the '${l}' must be an object instance: ${u}`);
-          if (Array.isArray(u)) {
-            const y = typeof u[0];
+          if (a === null)
+            throw TypeError(
+              `The value for the '${l}' must be an object instance: ${a}`
+            );
+          if (Array.isArray(a)) {
+            const y = typeof a[0];
             if (y !== "object") {
-              if (y === "function" && ![String, Number, Boolean].includes(u[0]))
-                throw TypeError(`The array item for the '${l}' must be one of the primitive types constructor: String, Number, or Boolean`);
-              const T = y === "function" ? u[0] : Ge(y, l), w = y === "function" ? [] : Object.freeze(u.map(T));
-              return (m, v, E) => {
-                if (hasOwnProperty.call(v, l)) {
-                  if (!Array.isArray(v[l]))
-                    throw TypeError(`The value for '${l}' property must be an array: ${typeof v[l]}`);
-                  m[l] = Object.freeze(v[l].map(T));
+              if (y === "function" && ![String, Number, Boolean].includes(a[0]))
+                throw TypeError(
+                  `The array item for the '${l}' must be one of the primitive types constructor: String, Number, or Boolean`
+                );
+              const w = y === "function" ? a[0] : Ze(y, l), m = y === "function" ? [] : Object.freeze(a.map(w));
+              return (v, $, T) => {
+                if (hasOwnProperty.call($, l)) {
+                  if (!Array.isArray($[l]))
+                    throw TypeError(
+                      `The value for '${l}' property must be an array: ${typeof $[l]}`
+                    );
+                  v[l] = Object.freeze($[l].map(w));
                 } else
-                  E && hasOwnProperty.call(E, l) ? m[l] = E[l] : m[l] = w;
+                  T && hasOwnProperty.call(T, l) ? v[l] = T[l] : v[l] = m;
               };
             }
-            const b = z(u, !0);
-            if (b.external && n.storage.offline && b.storage.offline && b.storage.offline.threshold < n.storage.offline.threshold)
-              throw Error(`External nested model for '${l}' property has lower offline threshold (${b.storage.offline.threshold} ms) than the parent definition (${n.storage.offline.threshold} ms)`);
-            if (b.enumerable && u[1]) {
-              const T = u[1];
-              if (typeof T != "object")
-                throw TypeError(`Options for '${l}' array property must be an object instance: ${typeof T}`);
-              T.loose && (n.contexts = n.contexts || /* @__PURE__ */ new Set(), n.contexts.add(z(u[0])));
+            const g = M(a, !0);
+            if (g.external && n.storage.offline && g.storage.offline && g.storage.offline.threshold < n.storage.offline.threshold)
+              throw Error(
+                `External nested model for '${l}' property has lower offline threshold (${g.storage.offline.threshold} ms) than the parent definition (${n.storage.offline.threshold} ms)`
+              );
+            if (g.enumerable && a[1]) {
+              const w = a[1];
+              if (typeof w != "object")
+                throw TypeError(
+                  `Options for '${l}' array property must be an object instance: ${typeof w}`
+                );
+              w.loose && (n.contexts = n.contexts || /* @__PURE__ */ new Set(), n.contexts.add(M(a[0])));
             }
-            return (T, w, m) => {
-              if (hasOwnProperty.call(w, l)) {
-                if (!Array.isArray(w[l]))
-                  throw TypeError(`The value for '${l}' property must be an array: ${typeof w[l]}`);
-                T[l] = b.create(w[l], !0);
+            return (w, m, v) => {
+              if (hasOwnProperty.call(m, l)) {
+                if (!Array.isArray(m[l]))
+                  throw TypeError(
+                    `The value for '${l}' property must be an array: ${typeof m[l]}`
+                  );
+                w[l] = g.create(m[l], !0);
               } else
-                T[l] = m && m[l] || !b.enumerable && b.create(u) || [];
+                w[l] = v && v[l] || !g.enumerable && g.create(a) || [];
             };
           }
-          const g = z(u, !0);
-          if (g.enumerable || g.external) {
-            if (n.storage.offline && g.storage.offline && g.storage.offline.threshold < n.storage.offline.threshold)
-              throw Error(`External nested model for '${l}' property has lower offline threshold (${g.storage.offline.threshold} ms) than the parent definition (${n.storage.offline.threshold} ms)`);
-            return (y, b, T) => {
-              let w;
-              if (hasOwnProperty.call(b, l)) {
-                const m = b[l];
-                if (typeof m != "object" || m === null)
-                  m != null && (w = {
-                    id: m
-                  });
+          const d = M(a, !0);
+          if (d.enumerable || d.external) {
+            if (n.storage.offline && d.storage.offline && d.storage.offline.threshold < n.storage.offline.threshold)
+              throw Error(
+                `External nested model for '${l}' property has lower offline threshold (${d.storage.offline.threshold} ms) than the parent definition (${n.storage.offline.threshold} ms)`
+              );
+            return (y, g, w) => {
+              let m;
+              if (hasOwnProperty.call(g, l)) {
+                const v = g[l];
+                if (typeof v != "object" || v === null)
+                  v != null && (m = { id: v });
                 else {
-                  const v = S.get(m);
-                  if (v) {
-                    if (v.model !== u)
-                      throw TypeError("Model instance must match the definition");
-                    w = m;
+                  const $ = x.get(v);
+                  if ($) {
+                    if ($.model !== a)
+                      throw TypeError(
+                        "Model instance must match the definition"
+                      );
+                    m = v;
                   } else {
-                    const E = _(g, b[l].id).value;
-                    w = g.create(m, E && g.isInstance(E) ? E : void 0), k(g, w.id, w);
+                    const T = B(
+                      d,
+                      g[l].id
+                    ).value;
+                    m = d.create(
+                      v,
+                      T && d.isInstance(T) ? T : void 0
+                    ), I(d, m.id, m);
                   }
                 }
               } else
-                w = T && T[l];
-              if (w) {
-                const m = w.id;
+                m = w && w[l];
+              if (m) {
+                const v = m.id;
                 Object.defineProperty(y, l, {
                   get() {
-                    return D(this, l, () => N(u, m));
+                    return W(this, l, () => A(a, v));
                   },
                   enumerable: !0
                 });
@@ -660,132 +693,160 @@ function Ot(e, t) {
                 y[l] = void 0;
             };
           }
-          return (y, b, T) => {
-            hasOwnProperty.call(b, l) ? y[l] = b[l] === null ? g.create({}) : g.create(b[l], T && T[l]) : y[l] = T ? T[l] : g.create({});
+          return (y, g, w) => {
+            hasOwnProperty.call(g, l) ? y[l] = g[l] === null ? d.create({}) : d.create(g[l], w && w[l]) : y[l] = w ? w[l] : d.create({});
           };
         }
         default: {
-          const f = Ge(h, l);
-          return (g, y, b) => {
-            hasOwnProperty.call(y, l) ? g[l] = f(y[l]) : b && hasOwnProperty.call(b, l) ? g[l] = b[l] : g[l] = u;
+          const u = Ze(p, l);
+          return (d, y, g) => {
+            hasOwnProperty.call(y, l) ? d[l] = u(y[l]) : g && hasOwnProperty.call(g, l) ? d[l] = g[l] : d[l] = a;
           };
         }
       }
     });
-    n.create = function(u, h) {
-      if (u === null)
+    n.create = function(a, p) {
+      if (a === null)
         return null;
-      if (typeof u != "object")
-        throw TypeError(`Model values must be an object instance: ${u}`);
-      const f = Object.create(c);
-      for (const g of d)
-        g(f, u, h);
-      return S.set(f, n), ke.set(f, Be), Object.freeze(f);
-    }, Object.freeze(p), Object.freeze(n);
+      if (typeof a != "object")
+        throw TypeError(`Model values must be an object instance: ${a}`);
+      const u = Object.create(f);
+      for (const d of b)
+        d(u, a, p);
+      return x.set(u, n), Ve.set(u, qe), Object.freeze(u);
+    }, Object.freeze(h), Object.freeze(n);
   }
   return n;
 }
-const He = Object.getOwnPropertyNames(Array.prototype).reduce((e, t) => (t === "length" || t === "constructor" || Object.defineProperty(e, t, {
+const et = Object.getOwnPropertyNames(
+  Array.prototype
+).reduce((e, t) => (t === "length" || t === "constructor" || Object.defineProperty(e, t, {
   get() {
-    throw Error(`Model list instance in ${se(this).state} state - use store.pending(), store.error(), or store.ready() guards`);
+    throw Error(
+      `Model list instance in ${le(this).state} state - use store.pending(), store.error(), or store.ready() guards`
+    );
   }
 }), e), []), ze = /* @__PURE__ */ new WeakMap();
-function Zt(e, t) {
+function cn(e, t) {
   let n = ze.get(e);
   if (n && !n.enumerable && !t && n.nested)
-    throw TypeError(j(e, "Nested model definition cannot be used outside of the parent definition"));
+    throw TypeError(
+      L(
+        e,
+        "Nested model definition cannot be used outside of the parent definition"
+      )
+    );
   if (!n) {
-    const r = Ot(e), s = /* @__PURE__ */ new Set();
-    if (r.storage.loose && s.add(r), !t) {
-      if (!r.enumerable)
-        throw TypeError(j(e, "Provided model definition does not support listing (it must be enumerable - set `id` property to `true`)"));
-      if (!r.storage.list)
-        throw TypeError(j(e, "Provided model definition storage does not support `list` action"));
+    const o = At(e), i = /* @__PURE__ */ new Set();
+    if (o.storage.loose && i.add(o), !t) {
+      if (!o.enumerable)
+        throw TypeError(
+          L(
+            e,
+            "Provided model definition does not support listing (it must be enumerable - set `id` property to `true`)"
+          )
+        );
+      if (!o.storage.list)
+        throw TypeError(
+          L(
+            e,
+            "Provided model definition storage does not support `list` action"
+          )
+        );
     }
-    t = !r.enumerable && !r.external && t, n = {
+    t = !o.enumerable && !o.external && t, n = {
       list: !0,
       nested: t,
       model: e,
-      contexts: s,
-      enumerable: r.enumerable,
-      external: r.external,
+      contexts: i,
+      enumerable: o.enumerable,
+      external: o.external,
       placeholder: () => {
-        const o = Object.create(He);
-        return S.set(o, n), Object.freeze(o);
+        const r = Object.create(et);
+        return x.set(r, n), Object.freeze(r);
       },
-      isInstance: (o) => Object.getPrototypeOf(o) !== He,
-      create(o) {
-        let i = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : !1;
-        if (o === null)
+      isInstance: (r) => Object.getPrototypeOf(r) !== et,
+      create(r, s = !1) {
+        if (r === null)
           return null;
-        const a = [];
-        for (const c of o) {
-          let p = c;
-          if (typeof c == "object" && c !== null) {
-            p = c.id;
-            const d = S.get(c);
-            let l = c;
-            if (d) {
-              if (d.model !== e)
+        const c = [];
+        for (const f of r) {
+          let h = f;
+          if (typeof f == "object" && f !== null) {
+            h = f.id;
+            const b = x.get(f);
+            let l = f;
+            if (b) {
+              if (b.model !== e)
                 throw TypeError("Model instance must match the definition");
             } else {
-              const u = r.enumerable && _(r, c.id).value;
-              l = r.create(c, u && r.isInstance(u) ? u : void 0), r.enumerable && (p = l.id, k(r, p, l, i));
+              const a = o.enumerable && B(o, f.id).value;
+              l = o.create(
+                f,
+                a && o.isInstance(a) ? a : void 0
+              ), o.enumerable && (h = l.id, I(o, h, l, s));
             }
-            r.enumerable || a.push(l);
-          } else if (!r.enumerable)
-            throw TypeError(`Model instance must be an object: ${typeof c}`);
-          if (r.enumerable) {
-            const d = a.length;
-            Object.defineProperty(a, d, {
+            o.enumerable || c.push(l);
+          } else if (!o.enumerable)
+            throw TypeError(`Model instance must be an object: ${typeof f}`);
+          if (o.enumerable) {
+            const b = c.length;
+            Object.defineProperty(c, b, {
               get() {
-                return D(this, d, () => N(e, p));
+                return W(this, b, () => A(e, h));
               },
               enumerable: !0
             });
           }
         }
-        return Object.defineProperties(a, {
-          id: {
-            value: o.id
-          },
+        return Object.defineProperties(c, {
+          id: { value: r.id },
           toString: {
             value: function() {
               return this.id;
             }
           }
-        }), S.set(a, n), ke.set(a, Be), Object.freeze(a);
+        }), x.set(c, n), Ve.set(c, qe), Object.freeze(c);
       }
     }, n.storage = Object.freeze({
-      ...Et(n, {
-        cache: r.storage.cache,
-        get: !t && ((o) => r.storage.list(o))
+      ...jt(n, {
+        cache: o.storage.cache,
+        get: !t && ((r) => o.storage.list(r))
       }),
-      offline: r.storage.offline && {
-        threshold: r.storage.offline.threshold,
-        get: (o) => {
-          const i = Z(o);
-          let a = r.storage.offline.get(Me(String(i)));
-          return a ? (a = a.map((c) => r.storage.offline.get(c)), a.id = i, a) : null;
+      offline: o.storage.offline && {
+        threshold: o.storage.offline.threshold,
+        get: (r) => {
+          const s = te(r);
+          let c = o.storage.offline.get(
+            _e(String(s))
+          );
+          return c ? (c = c.map(
+            (f) => o.storage.offline.get(f)
+          ), c.id = s, c) : null;
         },
-        set: (o, i) => {
-          r.storage.offline.set(Me(String(Z(o))), i.map((a) => (r.storage.offline.set(a.id, a), a.id)));
+        set: (r, s) => {
+          o.storage.offline.set(
+            _e(String(te(r))),
+            s.map((c) => (o.storage.offline.set(c.id, c), c.id))
+          );
         }
       }
     }), ze.set(e, Object.freeze(n));
   }
   return n;
 }
-function en(e, t) {
-  return t || O();
+function fn(e, t) {
+  return t || P();
 }
-function Z(e) {
+function te(e) {
   switch (typeof e) {
     case "object": {
       const t = {};
       for (const n of Object.keys(e).sort()) {
         if (typeof e[n] == "object" && e[n] !== null)
-          throw TypeError(`You must use primitive value for '${n}' key: ${typeof e[n]}`);
+          throw TypeError(
+            `You must use primitive value for '${n}' key: ${typeof e[n]}`
+          );
         t[n] = e[n];
       }
       return JSON.stringify(t);
@@ -796,230 +857,266 @@ function Z(e) {
       return String(e);
   }
 }
-const Nt = /* @__PURE__ */ new WeakSet();
-function ee(e, t) {
-  const n = Error(j(e, `Model instance ${t !== void 0 ? `with '${t}' id ` : ""}does not exist`));
-  return Nt.add(n), n;
+const Lt = /* @__PURE__ */ new WeakSet();
+function ne(e, t) {
+  const n = Error(
+    L(
+      e,
+      `Model instance ${t !== void 0 ? `with '${t}' id ` : ""}does not exist`
+    )
+  );
+  return Lt.add(n), n;
 }
-function me(e, t, n) {
-  return n !== !1 && !Nt.has(t) && console.error(t), M(e, "error", t);
+function ye(e, t, n) {
+  return n !== !1 && !Lt.has(t) && console.error(t), R(e, "error", t);
 }
-function N(e, t) {
-  const n = z(e);
-  let r;
+function A(e, t) {
+  const n = M(e);
+  let o;
   if (n.enumerable) {
-    if (r = Z(t), !r && !n.list && !te.get(n))
-      throw TypeError(j(e, `Provided model definition requires non-empty id: "${r}"`));
+    if (o = te(t), !o && !n.list && !oe.get(n))
+      throw TypeError(
+        L(
+          e,
+          `Provided model definition requires non-empty id: "${o}"`
+        )
+      );
   } else if (t !== void 0)
-    throw TypeError(j(e, "Provided model definition does not support id"));
-  const s = n.storage.offline, o = n.storage.validate, i = _(n, r);
-  return i.value && !o(i.value) && (i.resolved = !1), D(n, r, (a, c) => {
-    if (c && V(c))
-      return c;
-    let p = !0;
+    throw TypeError(
+      L(e, "Provided model definition does not support id")
+    );
+  const i = n.storage.offline, r = n.storage.validate, s = B(n, o);
+  return s.value && !r(s.value) && (s.resolved = !1), W(n, o, (c, f) => {
+    if (f && F(f))
+      return f;
+    let h = !0;
     if (n.contexts)
       for (const l of n.contexts)
-        D(l, l, en) === O() && (p = !1);
-    if (p && c && o(c))
-      return c;
-    const d = () => c || s && n.create(s.get(r)) || n.placeholder(r);
+        W(l, l, fn) === P() && (h = !1);
+    if (h && f && r(f))
+      return f;
+    const b = () => f || i && n.create(i.get(o)) || n.placeholder(o);
     try {
       let l = n.storage.get(t);
       if (typeof l != "object" || l === null)
-        throw s && s.set(r, null), ee(e, r);
+        throw i && i.set(o, null), ne(e, o);
       if (l instanceof Promise)
-        return l = l.then((h) => {
-          if (typeof h != "object" || h === null)
-            throw s && s.set(r, null), ee(e, r);
-          h.id !== r && (h.id = r);
-          const f = n.create(h);
-          return s && s.set(r, f), k(n, r, Ee(f));
-        }).catch((h) => k(n, r, me(d(), h))), M(d(), "pending", l);
-      l.id !== r && (l.id = r);
-      const u = n.create(l);
-      return s && Promise.resolve().then(() => {
-        s.set(r, u);
-      }), Ve(n, Ee(u), c);
+        return l = l.then((p) => {
+          if (typeof p != "object" || p === null)
+            throw i && i.set(o, null), ne(e, o);
+          p.id !== o && (p.id = o);
+          const u = n.create(p);
+          return i && i.set(o, u), I(n, o, Oe(u));
+        }).catch((p) => I(n, o, ye(b(), p))), R(b(), "pending", l);
+      l.id !== o && (l.id = o);
+      const a = n.create(l);
+      return i && Promise.resolve().then(() => {
+        i.set(o, a);
+      }), Je(n, Oe(a), f);
     } catch (l) {
-      return Ee(me(d(), l));
+      return Oe(ye(b(), l));
     }
   });
 }
-const te = /* @__PURE__ */ new WeakMap();
-function Ue(e) {
-  const t = Object.keys(e), n = Error(`Model validation failed (${t.join(", ")}) - read the details from 'errors' property`);
+const oe = /* @__PURE__ */ new WeakMap();
+function tt(e) {
+  const t = Object.keys(e), n = Error(
+    `Model validation failed (${t.join(
+      ", "
+    )}) - read the details from 'errors' property`
+  );
   return n.errors = e, n;
 }
-function G(e) {
-  let t = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {}, n = S.get(e);
-  if (n === null && (e = ve.get(e), n = S.get(e)), n === null)
-    throw Error("Provided model instance has expired. Haven't you used stale value?");
-  let r = !!n;
-  if (n || (n = z(e)), n.nested)
-    throw j(n.model, TypeError("Setting provided nested model instance is not supported, use the root model instance"));
+function H(e, t = {}) {
+  let n = x.get(e);
+  if (n === null && (e = $e.get(e), n = x.get(e)), n === null)
+    throw Error(
+      "Provided model instance has expired. Haven't you used stale value?"
+    );
+  let o = !!n;
+  if (n || (n = M(e)), n.nested)
+    throw L(
+      n.model,
+      TypeError(
+        "Setting provided nested model instance is not supported, use the root model instance"
+      )
+    );
   if (n.list)
     throw TypeError("Listing model definition does not support 'set' method");
   if (!n.storage.set)
-    throw j(n.model, TypeError("Provided model definition storage does not support 'set' method"));
-  if (!r && !n.enumerable && (r = !0, e = N(e)), r) {
-    const i = V(e);
-    if (i)
-      return i.then((a) => G(a, t));
+    throw L(
+      n.model,
+      TypeError(
+        "Provided model definition storage does not support 'set' method"
+      )
+    );
+  if (!o && !n.enumerable && (o = !0, e = A(e)), o) {
+    const s = F(e);
+    if (s)
+      return s.then((c) => H(c, t));
   }
-  const s = te.get(n);
-  let o;
+  const i = oe.get(n);
+  let r;
   try {
-    if (n.enumerable && !r && (!t || typeof t != "object"))
+    if (n.enumerable && !o && (!t || typeof t != "object"))
       throw TypeError(`Values must be an object instance: ${t}`);
-    if (!s && t && hasOwnProperty.call(t, "id"))
+    if (!i && t && hasOwnProperty.call(t, "id"))
       throw TypeError(`Values must not contain 'id' property: ${t.id}`);
-    const i = n.create(t, r ? e : void 0), a = t ? Object.keys(t) : [], c = {}, p = r && s && ie(e);
-    let d = !1;
-    if (i) {
-      for (const [u, h] of n.checks.entries()) {
-        if (a.indexOf(u) === -1 && (p && p.errors && p.errors[u] && (d = !0, c[u] = p.errors[u]), s && i[u] == n.model[u]))
+    const s = n.create(t, o ? e : void 0), c = t ? Object.keys(t) : [], f = {}, h = o && i && ae(e);
+    let b = !1;
+    if (s) {
+      for (const [a, p] of n.checks.entries()) {
+        if (c.indexOf(a) === -1 && (h && h.errors && h.errors[a] && (b = !0, f[a] = h.errors[a]), i && s[a] == n.model[a]))
           continue;
-        let f;
+        let u;
         try {
-          f = h(i[u], u, i);
-        } catch (g) {
-          f = g;
+          u = p(s[a], a, s);
+        } catch (d) {
+          u = d;
         }
-        f !== !0 && f !== void 0 && (d = !0, c[u] = f || !0);
+        u !== !0 && u !== void 0 && (b = !0, f[a] = u || !0);
       }
-      if (d && !s)
-        throw Ue(c);
+      if (b && !i)
+        throw tt(f);
     }
-    o = i ? i.id : e.id;
-    const l = Promise.resolve(n.storage.set(r ? o : void 0, i, a)).then((u) => {
-      const h = u === i ? i : n.create(u);
-      if (r && h && o !== h.id)
-        throw TypeError(`Local and storage data must have the same id: '${o}', '${h.id}'`);
-      let f = h ? h.id : o;
-      return d && s && M(h, "error", Ue(c)), s && r && hasOwnProperty.call(u, "id") && (!i || i.id !== e.id) ? f = e.id : n.storage.offline && n.storage.offline.set(f, h), k(n, f, h || me(n.placeholder(f), ee(n.model, o), !1), !0);
-    }).catch((u) => {
-      throw u = u !== void 0 ? u : Error("Undefined error"), r && M(e, "error", u), u;
+    r = s ? s.id : e.id;
+    const l = Promise.resolve(
+      n.storage.set(o ? r : void 0, s, c)
+    ).then((a) => {
+      const p = a === s ? s : n.create(a);
+      if (o && p && r !== p.id)
+        throw TypeError(
+          `Local and storage data must have the same id: '${r}', '${p.id}'`
+        );
+      let u = p ? p.id : r;
+      return b && i && R(p, "error", tt(f)), i && o && hasOwnProperty.call(a, "id") && (!s || s.id !== e.id) ? u = e.id : n.storage.offline && n.storage.offline.set(u, p), I(
+        n,
+        u,
+        p || ye(
+          n.placeholder(u),
+          ne(n.model, r),
+          !1
+        ),
+        !0
+      );
+    }).catch((a) => {
+      throw a = a !== void 0 ? a : Error("Undefined error"), o && R(e, "error", a), a;
     });
-    return r && M(e, "pending", l), l;
-  } catch (i) {
-    return r && M(e, "error", i), Promise.reject(i);
+    return o && R(e, "pending", l), l;
+  } catch (s) {
+    return o && R(e, "error", s), Promise.reject(s);
   }
 }
-function tn(e, t) {
+function un(e, t) {
   if (typeof t != "object")
     throw TypeError(`Values must be an object instance: ${t}`);
-  let n = S.get(e);
-  if (n === null && (e = ve.get(e), n = S.get(e)), n === null)
-    throw Error("Provided model instance has expired. Haven't you used stale value?");
+  let n = x.get(e);
+  if (n === null && (e = $e.get(e), n = x.get(e)), n === null)
+    throw Error(
+      "Provided model instance has expired. Haven't you used stale value?"
+    );
   if (n === void 0) {
     if (!t)
       throw TypeError("Values must be defined for usage with model definition");
-    n = z(e), e = void 0;
+    n = M(e), e = void 0;
   } else if (t && hasOwnProperty.call(t, "id"))
     throw TypeError(`Values must not contain 'id' property: ${t.id}`);
   if (n.list)
     throw TypeError("Listing model definition is not supported in sync method");
-  const r = n.create(t, e), s = t ? r.id : e.id;
-  return k(n, s, r || me(n.placeholder(s), ee(n.model, s), !1));
+  const o = n.create(t, e), i = t ? o.id : e.id;
+  return I(
+    n,
+    i,
+    o || ye(n.placeholder(i), ne(n.model, i), !1)
+  );
 }
-function We(e) {
-  let t = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : !0;
+function De(e, t = !0) {
   if (typeof e != "object" || e === null)
-    throw TypeError(`The first argument must be a model instance or a model definition: ${e}`);
-  let n = S.get(e);
+    throw TypeError(
+      `The first argument must be a model instance or a model definition: ${e}`
+    );
+  let n = x.get(e);
   if (n === null)
-    throw Error("Provided model instance has expired. Haven't you used stale value from the outer scope?");
+    throw Error(
+      "Provided model instance has expired. Haven't you used stale value from the outer scope?"
+    );
   if (n) {
-    const r = t && n.storage.offline;
-    r && r.set(e.id, null), qe(e), we(n, e.id, {
-      clearValue: t,
-      deleteEntry: t
-    });
+    const o = t && n.storage.offline;
+    o && o.set(e.id, null), Qe(e), Te(n, e.id, { clearValue: t, deleteEntry: t });
   } else {
-    if (!he.get(e) && !ze.get(e[0]))
-      throw Error("Model definition must be used before - passed argument is probably not a model definition");
-    n = z(e);
-    const r = t && n.storage.offline;
-    for (const s of mt(n))
-      r && r.set(s.key, null), s.value && qe(s.value);
-    yt(n, {
-      clearValue: t,
-      deleteEntry: t
-    });
+    if (!ge.get(e) && !ze.get(e[0]))
+      throw Error(
+        "Model definition must be used before - passed argument is probably not a model definition"
+      );
+    n = M(e);
+    const o = t && n.storage.offline;
+    for (const i of $t(n))
+      o && o.set(i.key, null), i.value && Qe(i.value);
+    Et(n, { clearValue: t, deleteEntry: t });
   }
 }
-function V() {
-  let e = !1;
-  for (var t = arguments.length, n = new Array(t), r = 0; r < t; r++)
-    n[r] = arguments[r];
-  const s = n.map((o) => {
+function F(...e) {
+  let t = !1;
+  const n = e.map((o) => {
     try {
-      const {
-        state: i,
-        value: a
-      } = se(o);
+      const { state: i, value: r } = le(o);
       if (i === "pending")
-        return e = !0, a;
+        return t = !0, r;
     } catch {
     }
     return Promise.resolve(o);
   });
-  return e && (n.length > 1 ? Promise.all(s) : s[0]);
+  return t && (e.length > 1 ? Promise.all(n) : n[0]);
 }
-function jt(e, t) {
-  e = ve.get(e) || e, S.get(e) || (e = N(e, t));
-  const n = V(e);
+function kt(e, t) {
+  e = $e.get(e) || e, x.get(e) || (e = A(e, t));
+  const n = F(e);
   if (!n) {
-    const r = ie(e);
-    return r ? Promise.reject(r) : Promise.resolve(e);
+    const o = ae(e);
+    return o ? Promise.reject(o) : Promise.resolve(e);
   }
-  return n.then((r) => jt(r));
+  return n.then((o) => kt(o));
 }
-function ie(e, t) {
+function ae(e, t) {
   if (e === null || typeof e != "object")
     return !1;
-  const n = se(e);
+  const n = le(e);
   if (t !== void 0) {
-    const r = typeof n.error == "object" && n.error && n.error.errors;
-    return t === null ? !r && n.error : r[t];
+    const o = typeof n.error == "object" && n.error && n.error.errors;
+    return t === null ? !o && n.error : o[t];
   }
   return n.error;
 }
-function Re() {
-  for (var e = arguments.length, t = new Array(e), n = 0; n < e; n++)
-    t[n] = arguments[n];
-  return t.length > 0 && t.every((r) => {
-    const s = S.get(r);
-    return !!(s && s.isInstance(r));
+function We(...e) {
+  return e.length > 0 && e.every((t) => {
+    const n = x.get(t);
+    return !!(n && n.isInstance(t));
   });
 }
-function Ye(e, t) {
-  return e = {
-    ...e,
-    ...t
-  }, delete e.id, e;
+function nt(e, t) {
+  return e = { ...e, ...t }, delete e.id, e;
 }
-function nn(e) {
-  let t = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
-  const n = S.get(e);
-  if (!n || !te.has(n))
+function dn(e, t = {}) {
+  const n = x.get(e);
+  if (!n || !oe.has(n))
     throw TypeError(`Provided model instance is not a draft: ${e}`);
-  if (V(e))
+  if (F(e))
     throw Error("Model draft in pending state");
-  const r = te.get(n);
-  let s;
-  if (_(r, e.id).value) {
-    const o = N(r.model, e.id);
-    s = Promise.resolve(V(o) || o).then((i) => G(i, Ye(e, t)));
+  const o = oe.get(n);
+  let i;
+  if (B(o, e.id).value) {
+    const r = A(o.model, e.id);
+    i = Promise.resolve(F(r) || r).then(
+      (s) => H(s, nt(e, t))
+    );
   } else
-    s = G(r.model, Ye(e, t));
-  return s = s.then((o) => (M(e, "ready"), G(e, o).then(() => o))).catch((o) => (M(e, "error", o), Promise.reject(o))), M(e, "pending", s), s;
+    i = H(o.model, nt(e, t));
+  return i = i.then((r) => (R(e, "ready"), H(e, r).then(() => r))).catch((r) => (R(e, "error", r), Promise.reject(r))), R(e, "pending", i), i;
 }
-function rn(e, t) {
+function pn(e, t) {
   return !!e || `${t} is required`;
 }
-function on(e) {
-  let t = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : rn, n = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : "";
+function hn(e, t = pn, n = "") {
   switch (typeof e) {
     case "string":
       e = new String(e);
@@ -1031,267 +1128,218 @@ function on(e) {
       e = new Boolean(e);
       break;
     default:
-      throw TypeError(`Default value must be a string, number or boolean: ${typeof e}`);
+      throw TypeError(
+        `Default value must be a string, number or boolean: ${typeof e}`
+      );
   }
-  let r;
+  let o;
   if (t instanceof RegExp)
-    r = (s) => t.test(s) || n;
+    o = (i) => t.test(i) || n;
   else if (typeof t == "function")
-    r = function() {
-      const s = t(...arguments);
-      return s !== !0 && s !== void 0 && n || s;
+    o = (...i) => {
+      const r = t(...i);
+      return r !== !0 && r !== void 0 && n || r;
     };
   else
-    throw TypeError(`The second argument must be a RegExp instance or a function: ${typeof t}`);
-  return xt.set(e, r), e;
+    throw TypeError(
+      `The second argument must be a RegExp instance or a function: ${typeof t}`
+    );
+  return Pt.set(e, o), e;
 }
-function sn(e) {
-  const t = S.get(e), n = Object.freeze(Object.create(e));
-  return S.set(n, t), n;
+function bn(e) {
+  const t = x.get(e), n = Object.freeze(Object.create(e));
+  return x.set(n, t), n;
 }
-function Be(e) {
-  let t = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
-  const n = z(e);
+function qe(e, t = {}) {
+  const n = M(e);
   if (t.id !== void 0 && typeof t.id != "function") {
-    const s = t.id;
-    t.id = (o) => o[s];
+    const i = t.id;
+    t.id = (r) => r[i];
   }
   if (t.id && !n.enumerable)
-    throw TypeError("Store factory for singleton model definition does not support 'id' option");
-  let r;
+    throw TypeError(
+      "Store factory for singleton model definition does not support 'id' option"
+    );
+  let o;
   if (t.draft) {
     if (n.list)
-      throw TypeError("Draft mode is not supported for listing model definition");
-    r = z({
+      throw TypeError(
+        "Draft mode is not supported for listing model definition"
+      );
+    o = M({
       ...e,
-      [_e]: {
-        get(s) {
-          const o = N(n.model, s);
-          return V(o) || o;
+      [Xe]: {
+        get(i) {
+          const r = A(n.model, i);
+          return F(r) || r;
         },
-        set(s, o) {
-          return o === null ? {
-            id: s
-          } : o;
+        set(i, r) {
+          return r === null ? { id: i } : r;
         }
       }
-    }), te.set(r, n), e = r.model;
+    }), oe.set(o, n), e = o.model;
   }
   return !t.id && n.enumerable && !n.list ? {
-    get(s, o) {
-      const a = S.get(o) !== void 0 ? o.id : o;
-      if (r && o == null) {
-        const c = r.create({}, {
-          id: void 0
-        });
-        return k(r, void 0, c, !1), N(e, void 0);
+    get(i, r) {
+      const c = x.get(r) !== void 0 ? r.id : r;
+      if (o && r == null) {
+        const f = o.create({}, { id: void 0 });
+        return I(o, void 0, f, !1), A(e, void 0);
       }
-      return o ? N(e, a) : void 0;
+      return r ? A(e, c) : void 0;
     },
-    set: (s, o) => o,
-    connect: r ? (s, o) => () => {
-      const i = s[o];
-      i && i.id && We(i, !0);
+    set: (i, r) => r,
+    connect: o ? (i, r) => () => {
+      const s = i[r];
+      s && s.id && De(s, !0);
     } : void 0
   } : {
-    get: (s, o) => {
-      const i = S.get(o), a = t.id && t.id(s) || (i !== void 0 ? o.id : o);
-      if (r && !a && o == null) {
-        const p = r.create({});
-        return k(r, void 0, p, !1), N(e, void 0);
+    get: (i, r) => {
+      const s = x.get(r), c = t.id && t.id(i) || (s !== void 0 ? r.id : r);
+      if (o && !c && r == null) {
+        const h = o.create({});
+        return I(o, void 0, h, !1), A(e, void 0);
       }
-      if (!n.list && n.enumerable && a === void 0)
+      if (!n.list && n.enumerable && c === void 0)
         return;
-      const c = N(e, a);
-      if (c !== o && Re(o) && !Re(c)) {
-        const p = sn(o);
-        return ye(p, "state", () => se(c)), p;
+      const f = A(e, c);
+      if (f !== r && We(r) && !We(f)) {
+        const h = bn(r);
+        return ve(h, "state", () => le(f)), h;
       }
-      return c;
+      return f;
     },
-    set: !t.id && n.list || r && !n.enumerable ? (s, o) => o : void 0,
-    connect: r && n.enumerable ? (s, o) => () => {
-      const i = s[o];
-      i && i.id && We(i, !0);
+    set: !t.id && n.list || o && !n.enumerable ? (i, r) => r : void 0,
+    connect: o && n.enumerable ? (i, r) => () => {
+      const s = i[r];
+      s && s.id && De(s, !0);
     } : void 0
   };
 }
-const Pt = Object.freeze(Object.assign(Be, {
-  // storage
-  connect: _e,
-  // actions
-  get: N,
-  set: G,
-  sync: tn,
-  clear: We,
-  // guards
-  pending: V,
-  error: ie,
-  ready: Re,
-  // helpers
-  submit: nn,
-  value: on,
-  resolve: jt,
-  ref: Ut
-})), H = /* @__PURE__ */ new WeakMap();
-function I(e) {
-  let t = H.get(e);
-  return t || (H.set(e, t = {}), t);
+const X = Object.freeze(
+  Object.assign(qe, {
+    // storage
+    connect: Xe,
+    // actions
+    get: A,
+    set: H,
+    sync: un,
+    clear: De,
+    // guards
+    pending: F,
+    error: ae,
+    ready: We,
+    // helpers
+    submit: dn,
+    value: hn,
+    resolve: kt,
+    ref: sn
+  })
+), Y = /* @__PURE__ */ new WeakMap();
+function D(e) {
+  let t = Y.get(e);
+  return t || (Y.set(e, t = {}), t);
 }
-function Te(e) {
+function Se(e) {
   let t;
-  for (; e && (t = I(e)) && t.endNode; )
+  for (; e && (t = D(e)) && t.endNode; )
     e = t.endNode;
   return e;
 }
-function ne(e) {
+function re(e) {
   if (e.nodeType === globalThis.Node.TEXT_NODE) {
-    const t = H.get(e);
+    const t = Y.get(e);
     if (t && t.startNode) {
-      const n = Te(t.endNode);
-      let r = t.startNode;
-      const s = n.nextSibling;
-      for (; r; ) {
-        const o = r.nextSibling;
-        r.parentNode.removeChild(r), r = o !== s && o;
+      const n = Se(t.endNode);
+      let o = t.startNode;
+      const i = n.nextSibling;
+      for (; o; ) {
+        const r = o.nextSibling;
+        o.parentNode.removeChild(o), o = r !== i && r;
       }
-      H.set(e, {});
+      Y.set(e, {});
     }
   } else {
     let t = e.childNodes[0];
     for (; t; )
       e.removeChild(t), t = e.childNodes[0];
-    H.set(e, {});
+    Y.set(e, {});
   }
 }
-const ln = Date.now(), W = function() {
-  let e = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : 0;
-  return `H-${ln}-${e}`;
-}, Fe = !!(globalThis.document && globalThis.document.adoptedStyleSheets), Ne = /^\d+$/, an = {
+const mn = Date.now(), _ = (e = 0) => `H-${mn}-${e}`, Ke = !!(globalThis.document && globalThis.document.adoptedStyleSheets), Pe = /^\d+$/, gn = {
   // base
   block: (e, t) => ({
     display: "block",
     "text-align": t
   }),
-  inline: (e) => {
-    let {
-      display: t
-    } = e;
-    return {
-      display: `inline${t ? `-${t}` : ""}`
-    };
-  },
-  contents: {
-    display: "contents"
-  },
-  hidden: {
-    display: "none"
-  },
+  inline: ({ display: e }) => ({
+    display: `inline${e ? `-${e}` : ""}`
+  }),
+  contents: { display: "contents" },
+  hidden: { display: "none" },
   // flexbox
-  ...["row", "row-reverse", "column", "column-reverse"].reduce((e, t) => (e[t] = function(n) {
-    let r = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : "nowrap";
-    return {
-      display: "flex",
-      "flex-flow": `${t} ${r}`
-    };
-  }, e), {}),
-  grow: function(e) {
-    return {
-      "flex-grow": arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 1
-    };
-  },
-  shrink: function(e) {
-    return {
-      "flex-shrink": arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 1
-    };
-  },
-  basis: (e, t) => ({
-    "flex-basis": $(t)
-  }),
-  order: function(e) {
-    return {
-      order: arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 0
-    };
-  },
+  ...["row", "row-reverse", "column", "column-reverse"].reduce((e, t) => (e[t] = (n, o = "nowrap") => ({
+    display: "flex",
+    "flex-flow": `${t} ${o}`
+  }), e), {}),
+  grow: (e, t = 1) => ({ "flex-grow": t }),
+  shrink: (e, t = 1) => ({ "flex-shrink": t }),
+  basis: (e, t) => ({ "flex-basis": E(t) }),
+  order: (e, t = 0) => ({ order: t }),
   // grid
-  grid: function(e) {
-    let t = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : "1", n = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : "", r = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : "", s = arguments.length > 4 && arguments[4] !== void 0 ? arguments[4] : "";
-    return {
-      display: "grid",
-      ...["columns", "rows"].reduce((o, i) => {
-        const a = i === "columns" ? t : n;
-        return o[`grid-template-${i}`] = a && a.split("|").map((c) => c.match(Ne) ? `repeat(${c}, minmax(0, 1fr))` : $(c)).join(" "), o;
-      }, {}),
-      "grid-auto-flow": `${r} ${s && "dense"}`
-    };
-  },
-  area: function(e) {
-    let t = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : "", n = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : "";
-    return {
-      "grid-column": t.match(Ne) ? `span ${t}` : t,
-      "grid-row": n.match(Ne) ? `span ${n}` : n
-    };
-  },
-  gap: function(e) {
-    let t = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 1, n = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : "";
-    return {
-      "column-gap": $(t),
-      "row-gap": $(n || t)
-    };
-  },
+  grid: (e, t = "1", n = "", o = "", i = "") => ({
+    display: "grid",
+    ...["columns", "rows"].reduce((r, s) => {
+      const c = s === "columns" ? t : n;
+      return r[`grid-template-${s}`] = c && c.split("|").map(
+        (f) => f.match(Pe) ? `repeat(${f}, minmax(0, 1fr))` : E(f)
+      ).join(" "), r;
+    }, {}),
+    "grid-auto-flow": `${o} ${i && "dense"}`
+  }),
+  area: (e, t = "", n = "") => ({
+    "grid-column": t.match(Pe) ? `span ${t}` : t,
+    "grid-row": n.match(Pe) ? `span ${n}` : n
+  }),
+  gap: (e, t = 1, n = "") => ({
+    "column-gap": E(t),
+    "row-gap": E(n || t)
+  }),
   // alignment
-  items: function(e) {
-    let t = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : "start", n = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : "";
-    return {
-      "place-items": `${t} ${n}`
-    };
-  },
-  content: function(e) {
-    let t = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : "start", n = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : "";
-    return {
-      "place-content": `${t} ${n}`
-    };
-  },
-  self: function(e) {
-    let t = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : "start", n = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : "";
-    return {
-      "place-self": `${t} ${n}`
-    };
-  },
-  center: {
-    "place-items": "center",
-    "place-content": "center"
-  },
+  items: (e, t = "start", n = "") => ({
+    "place-items": `${t} ${n}`
+  }),
+  content: (e, t = "start", n = "") => ({
+    "place-content": `${t} ${n}`
+  }),
+  self: (e, t = "start", n = "") => ({
+    "place-self": `${t} ${n}`
+  }),
+  center: { "place-items": "center", "place-content": "center" },
   // size
-  size: function(e, t) {
-    let n = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : t;
-    return {
-      width: $(t),
-      height: $(n),
-      "box-sizing": "border-box"
-    };
-  },
-  width: (e, t, n, r) => ({
-    width: $(t),
-    "min-width": $(n),
-    "max-width": $(r),
+  size: (e, t, n = t) => ({
+    width: E(t),
+    height: E(n),
     "box-sizing": "border-box"
   }),
-  height: (e, t, n, r) => ({
-    height: $(t),
-    "min-height": $(n),
-    "max-height": $(r),
+  width: (e, t, n, o) => ({
+    width: E(t),
+    "min-width": E(n),
+    "max-width": E(o),
     "box-sizing": "border-box"
   }),
-  ratio: (e, t) => ({
-    "aspect-ratio": t
+  height: (e, t, n, o) => ({
+    height: E(t),
+    "min-height": E(n),
+    "max-height": E(o),
+    "box-sizing": "border-box"
   }),
-  overflow: function(e) {
-    let t = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : "hidden", n = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : "";
-    const r = n ? `-${t}` : "", s = n || t;
+  ratio: (e, t) => ({ "aspect-ratio": t }),
+  overflow: (e, t = "hidden", n = "") => {
+    const o = n ? `-${t}` : "", i = n || t;
     return {
-      [`overflow${r}`]: s,
-      ...s === "scroll" ? {
+      [`overflow${o}`]: i,
+      ...i === "scroll" ? {
         "flex-grow": e["flex-grow"] || 1,
         "flex-basis": 0,
         "overscroll-behavior": "contain",
@@ -1299,207 +1347,185 @@ const ln = Date.now(), W = function() {
       } : {}
     };
   },
-  margin: function(e) {
-    let t = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : "1", n = arguments.length > 2 ? arguments[2] : void 0, r = arguments.length > 3 ? arguments[3] : void 0, s = arguments.length > 4 ? arguments[4] : void 0;
-    return t.match(/top|bottom|left|right/) ? {
-      [`margin-${t}`]: $(n || "1")
-    } : {
-      margin: `${$(t)} ${$(n)} ${$(r)} ${$(s)}`
-    };
+  margin: (e, t = "1", n, o, i) => t.match(/top|bottom|left|right/) ? {
+    [`margin-${t}`]: E(n || "1")
+  } : {
+    margin: `${E(t)} ${E(n)} ${E(o)} ${E(
+      i
+    )}`
   },
-  padding: function(e) {
-    let t = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : "1", n = arguments.length > 2 ? arguments[2] : void 0, r = arguments.length > 3 ? arguments[3] : void 0, s = arguments.length > 4 ? arguments[4] : void 0;
-    return t.match(/top|bottom|left|right/) ? {
-      [`padding-${t}`]: $(n || "1")
-    } : {
-      padding: `${$(t)} ${$(n)} ${$(r)} ${$(s)}`
-    };
+  padding: (e, t = "1", n, o, i) => t.match(/top|bottom|left|right/) ? {
+    [`padding-${t}`]: E(n || "1")
+  } : {
+    padding: `${E(t)} ${E(n)} ${E(o)} ${E(
+      i
+    )}`
   },
   // position types
-  absolute: {
-    position: "absolute"
-  },
-  relative: {
-    position: "relative"
-  },
-  fixed: {
-    position: "fixed"
-  },
-  sticky: {
-    position: "sticky"
-  },
-  static: {
-    position: "static"
-  },
+  absolute: { position: "absolute" },
+  relative: { position: "relative" },
+  fixed: { position: "fixed" },
+  sticky: { position: "sticky" },
+  static: { position: "static" },
   // position values
-  inset: function(e) {
-    let t = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 0;
-    const n = $(t);
+  inset: (e, t = 0) => {
+    const n = E(t);
+    return { top: n, right: n, bottom: n, left: n };
+  },
+  top: (e, t = 0) => ({ top: E(t) }),
+  bottom: (e, t = 0) => ({ bottom: E(t) }),
+  left: (e, t = 0) => ({ left: E(t) }),
+  right: (e, t = 0) => ({ right: E(t) }),
+  layer: (e, t = 1) => ({ "z-index": t }),
+  "": (e, t, ...n) => {
+    if (n.length < 2)
+      throw new Error(
+        "Generic rule '::' requires at least two arguments, eg.: ::[property]:[name]"
+      );
     return {
-      top: n,
-      right: n,
-      bottom: n,
-      left: n
+      [n[n.length - 2]]: `var(--${n.join("-")})`
     };
   },
-  top: function(e) {
-    let t = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 0;
-    return {
-      top: $(t)
-    };
-  },
-  bottom: function(e) {
-    let t = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 0;
-    return {
-      bottom: $(t)
-    };
-  },
-  left: function(e) {
-    let t = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 0;
-    return {
-      left: $(t)
-    };
-  },
-  right: function(e) {
-    let t = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 0;
-    return {
-      right: $(t)
-    };
-  },
-  layer: function(e) {
-    return {
-      "z-index": arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 1
-    };
-  },
-  "": function(e, t) {
-    for (var n = arguments.length, r = new Array(n > 2 ? n - 2 : 0), s = 2; s < n; s++)
-      r[s - 2] = arguments[s];
-    if (r.length < 2)
-      throw new Error("Generic rule '::' requires at least two arguments, eg.: ::[property]:[name]");
-    return {
-      [r[r.length - 2]]: `var(--${r.join("-")})`
-    };
-  },
-  view: (e, t) => ({
-    "view-transition-name": t
-  })
-}, un = {
+  view: (e, t) => ({ "view-transition-name": t })
+}, yn = {
   min: "min-content",
   max: "max-content",
   fit: "fit-content",
   full: "100%"
-}, cn = {
+}, wn = {
   portrait: "orientation: portrait",
   landscape: "orientation: landscape"
 };
-function $(e) {
-  return e = un[e] || e, /^-?\d+(\.\d+)*$/.test(String(e)) ? `${e * 8}px` : e || "";
+function E(e) {
+  return e = yn[e] || e, /^-?\d+(\.\d+)*$/.test(String(e)) ? `${e * 8}px` : e || "";
 }
-let B;
-function Ct() {
-  if (B)
-    return B;
-  if (Fe)
-    B = new globalThis.CSSStyleSheet();
+let V;
+function Rt() {
+  if (V)
+    return V;
+  if (Ke)
+    V = new globalThis.CSSStyleSheet();
   else {
     const e = globalThis.document.createElement("style");
-    e.appendChild(globalThis.document.createTextNode("")), globalThis.document.head.appendChild(e), B = e.sheet;
+    e.appendChild(globalThis.document.createTextNode("")), globalThis.document.head.appendChild(e), V = e.sheet;
   }
-  return B.insertRule(":host([hidden]) { display: none; }"), B;
+  return V.insertRule(":host([hidden]) { display: none; }"), V;
 }
-const Qe = /* @__PURE__ */ new WeakMap();
+const ot = /* @__PURE__ */ new WeakMap();
 let Ie = /* @__PURE__ */ new WeakSet();
-function fn(e) {
+function vn(e) {
   const t = e.getRootNode();
   if (Ie.has(t))
     return;
-  const n = Ct();
-  if (Fe)
+  const n = Rt();
+  if (Ke)
     t.adoptedStyleSheets = [...t.adoptedStyleSheets, n];
   else {
     if (t === globalThis.document)
       return;
-    let r = Qe.get(t);
-    r || (r = globalThis.document.createElement("style"), t.appendChild(r), Qe.set(t, r));
-    let s = "";
-    for (let o = 0; o < n.cssRules.length; o++)
-      s += n.cssRules[o].cssText;
-    r.textContent = s;
+    let o = ot.get(t);
+    o || (o = globalThis.document.createElement("style"), t.appendChild(o), ot.set(t, o));
+    let i = "";
+    for (let r = 0; r < n.cssRules.length; r++)
+      i += n.cssRules[r].cssText;
+    o.textContent = i;
   }
   Ie.add(t);
 }
-const Ze = /* @__PURE__ */ new Map();
-function et(e, t, n, r) {
-  let s = Ze.get(e);
-  s || (s = `l-${Math.random().toString(36).substr(2, 5)}`, Ze.set(e, s)), Fe || (Ie = /* @__PURE__ */ new WeakSet());
-  const o = Ct(), [i, a = ""] = t.split("@"), c = Object.entries(n.replace(/\s+/g, " ").trim().split(" ").reduce((d, l) => {
-    const [u, ...h] = l.split(":"), f = an[u];
-    if (!f)
-      throw TypeError(`Unsupported layout rule: '${u}'`);
-    return Object.assign(d, typeof f == "function" ? f(d, ...h.map((g) => g.match(/--.*/) ? `var(${g})` : g)) : f);
-  }, {})).reduce((d, l) => {
-    let [u, h] = l;
-    return h !== void 0 && h !== "" ? d + `${u}: ${h};` : d;
-  }, ""), p = a.split(":").reduce((d, l) => l === "" ? d : d + ` and (${cn[l] || `min-width: ${l}`})`, "@media screen");
-  if (r) {
-    const d = `:host(.${s}-s${i})`, l = `:where(.${s}-c${i})`;
-    [d, l].forEach((u) => {
-      o.insertRule(a ? `${p} { ${u} { ${c} } }` : `${u} { ${c} }`, o.cssRules.length - 1);
+const rt = /* @__PURE__ */ new Map();
+function it(e, t, n, o) {
+  let i = rt.get(e);
+  i || (i = `l-${Math.random().toString(36).substr(2, 5)}`, rt.set(e, i)), Ke || (Ie = /* @__PURE__ */ new WeakSet());
+  const r = Rt(), [s, c = ""] = t.split("@"), f = Object.entries(
+    n.replace(/\s+/g, " ").trim().split(" ").reduce((b, l) => {
+      const [a, ...p] = l.split(":"), u = gn[a];
+      if (!u)
+        throw TypeError(`Unsupported layout rule: '${a}'`);
+      return Object.assign(
+        b,
+        typeof u == "function" ? u(b, ...p.map((d) => d.match(/--.*/) ? `var(${d})` : d)) : u
+      );
+    }, {})
+  ).reduce(
+    (b, [l, a]) => a !== void 0 && a !== "" ? b + `${l}: ${a};` : b,
+    ""
+  ), h = c.split(":").reduce((b, l) => l === "" ? b : b + ` and (${wn[l] || `min-width: ${l}`})`, "@media screen");
+  if (o) {
+    const b = `:host(.${i}-s${s})`, l = `:where(.${i}-c${s})`;
+    [b, l].forEach((a) => {
+      r.insertRule(
+        c ? `${h} { ${a} { ${f} } }` : `${a} { ${f} }`,
+        r.cssRules.length - 1
+      );
     });
   } else {
-    const d = `.${s}${i}`;
-    o.insertRule(a ? `${p} { ${d} { ${c} } }` : `${d} { ${c} }`, o.cssRules.length - 1);
+    const b = `.${i}${s}`;
+    r.insertRule(
+      c ? `${h} { ${b} { ${f} } }` : `${b} { ${f} }`,
+      r.cssRules.length - 1
+    );
   }
-  return s;
+  return i;
 }
-const De = /* @__PURE__ */ new WeakMap();
-function dn(e, t) {
-  const n = I(e), r = n.startNode, s = Te(n.endNode);
+const Be = /* @__PURE__ */ new WeakMap();
+function Tn(e, t) {
+  const n = D(e), o = n.startNode, i = Se(n.endNode);
   t.parentNode.insertBefore(e, t.nextSibling);
-  let o = e, i = r;
-  for (; i; ) {
-    const a = i.nextSibling;
-    o.parentNode.insertBefore(i, o.nextSibling), o = i, i = a !== s.nextSibling && a;
+  let r = e, s = o;
+  for (; s; ) {
+    const c = s.nextSibling;
+    r.parentNode.insertBefore(s, r.nextSibling), r = s, s = c !== i.nextSibling && c;
   }
 }
-function gn(e, t, n, r, s) {
-  let o = De.get(t);
-  const i = n.map((d, l) => ({
-    id: hasOwnProperty.call(d, "id") ? d.id : l,
-    value: d,
+function $n(e, t, n, o, i) {
+  let r = Be.get(t);
+  const s = n.map((b, l) => ({
+    id: hasOwnProperty.call(b, "id") ? b.id : l,
+    value: b,
     placeholder: null,
     available: !0
   }));
-  if (De.set(t, i), o) {
-    const d = /* @__PURE__ */ new Set();
-    for (const l of i)
-      d.add(l.id);
-    o = o.filter((l) => d.has(l.id) ? !0 : (ne(l.placeholder), l.placeholder.parentNode.removeChild(l.placeholder), !1));
+  if (Be.set(t, s), r) {
+    const b = /* @__PURE__ */ new Set();
+    for (const l of s)
+      b.add(l.id);
+    r = r.filter((l) => b.has(l.id) ? !0 : (re(l.placeholder), l.placeholder.parentNode.removeChild(l.placeholder), !1));
   }
-  let a = t;
-  const c = n.length - 1, p = I(t);
-  for (let d = 0; d < i.length; d += 1) {
-    const l = i[d];
-    let u;
-    if (o) {
-      for (let h = 0; h < o.length; h += 1)
-        if (o[h].available && o[h].id === l.id) {
-          u = o[h];
+  let c = t;
+  const f = n.length - 1, h = D(t);
+  for (let b = 0; b < s.length; b += 1) {
+    const l = s[b];
+    let a;
+    if (r) {
+      for (let p = 0; p < r.length; p += 1)
+        if (r[p].available && r[p].id === l.id) {
+          a = r[p];
           break;
         }
     }
-    u ? (u.available = !1, l.placeholder = u.placeholder, l.placeholder.previousSibling !== a && dn(l.placeholder, a), u.value !== l.value && r(e, l.placeholder, l.value, u.value, s)) : (l.placeholder = globalThis.document.createTextNode(""), a.parentNode.insertBefore(l.placeholder, a.nextSibling), r(e, l.placeholder, l.value, void 0, s)), a = Te(I(l.placeholder).endNode || l.placeholder), d === 0 && (p.startNode = l.placeholder), d === c && (p.endNode = a);
+    a ? (a.available = !1, l.placeholder = a.placeholder, l.placeholder.previousSibling !== c && Tn(l.placeholder, c), a.value !== l.value && o(
+      e,
+      l.placeholder,
+      l.value,
+      a.value,
+      i
+    )) : (l.placeholder = globalThis.document.createTextNode(""), c.parentNode.insertBefore(
+      l.placeholder,
+      c.nextSibling
+    ), o(e, l.placeholder, l.value, void 0, i)), c = Se(
+      D(l.placeholder).endNode || l.placeholder
+    ), b === 0 && (h.startNode = l.placeholder), b === f && (h.endNode = c);
   }
-  if (o)
-    for (const d of o)
-      d.available && (ne(d.placeholder), d.placeholder.parentNode.removeChild(d.placeholder));
+  if (r)
+    for (const b of r)
+      b.available && (re(b.placeholder), b.placeholder.parentNode.removeChild(b.placeholder));
 }
-function pn(e, t, n) {
-  ne(t);
-  const r = I(t);
-  r.startNode = r.endNode = n, t.parentNode.insertBefore(n, t.nextSibling);
+function Sn(e, t, n) {
+  re(t);
+  const o = D(t);
+  o.startNode = o.endNode = n, t.parentNode.insertBefore(n, t.nextSibling);
 }
-function tt(e) {
+function st(e) {
   const t = typeof e;
   if (t === "object") {
     if (Array.isArray(e))
@@ -1509,442 +1535,500 @@ function tt(e) {
   }
   return t;
 }
-function re(e, t, n, r, s) {
-  const o = tt(n), i = tt(r);
-  switch (i !== "undefined" && o !== i && (o !== "function" && ne(t), i === "array" ? De.delete(t) : i !== "node" && i !== "function" && (t.textContent = "")), o) {
+function ie(e, t, n, o, i) {
+  const r = st(n), s = st(o);
+  switch (s !== "undefined" && r !== s && (r !== "function" && re(t), s === "array" ? Be.delete(t) : s !== "node" && s !== "function" && (t.textContent = "")), r) {
     case "array":
-      gn(e, t, n, re, s);
+      $n(e, t, n, ie, i);
       break;
     case "node":
-      pn(e, t, n);
+      Sn(e, t, n);
       break;
     case "function":
-      s && (n.useLayout = !0), n(e, t);
+      i && (n.useLayout = !0), n(e, t);
       break;
     default:
-      t.textContent = o === "number" || n ? n : "";
+      t.textContent = r === "number" || n ? n : "";
   }
 }
-const je = /* @__PURE__ */ new WeakMap();
-function hn(e) {
-  return (t, n, r, s) => {
-    if (s) {
-      const o = je.get(n);
-      n.removeEventListener(e, o.get(s), s.options !== void 0 ? s.options : !1);
+const Ae = /* @__PURE__ */ new WeakMap();
+function En(e) {
+  return (t, n, o, i) => {
+    if (i) {
+      const r = Ae.get(n);
+      n.removeEventListener(
+        e,
+        r.get(i),
+        i.options !== void 0 ? i.options : !1
+      );
     }
-    if (r) {
-      if (typeof r != "function")
-        throw Error(`Event listener must be a function: ${typeof r}`);
-      let o = je.get(n);
-      o || (o = /* @__PURE__ */ new WeakMap(), je.set(n, o));
-      const i = r.bind(null, t);
-      o.set(r, i), n.addEventListener(e, i, r.options !== void 0 ? r.options : !1);
+    if (o) {
+      if (typeof o != "function")
+        throw Error(`Event listener must be a function: ${typeof o}`);
+      let r = Ae.get(n);
+      r || (r = /* @__PURE__ */ new WeakMap(), Ae.set(n, r));
+      const s = o.bind(null, t);
+      r.set(o, s), n.addEventListener(
+        e,
+        s,
+        o.options !== void 0 ? o.options : !1
+      );
     }
   };
 }
-function mn(e) {
-  let t = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : /* @__PURE__ */ new Set();
+function xn(e, t = /* @__PURE__ */ new Set()) {
   if (Array.isArray(e))
     for (const n of e)
       n && t.add(n);
   else if (e !== null && typeof e == "object")
-    for (const [n, r] of Object.entries(e))
-      n && r && t.add(n);
+    for (const [n, o] of Object.entries(e))
+      n && o && t.add(n);
   else
     e && t.add(e);
   return t;
 }
-const nt = /* @__PURE__ */ new WeakMap();
-function bn(e, t, n) {
-  const r = nt.get(t) || /* @__PURE__ */ new Set(), s = mn(n);
-  nt.set(t, s);
-  for (const o of s)
-    t.classList.add(o), r.delete(o);
-  for (const o of r)
-    t.classList.remove(o);
+const lt = /* @__PURE__ */ new WeakMap();
+function On(e, t, n) {
+  const o = lt.get(t) || /* @__PURE__ */ new Set(), i = xn(n);
+  lt.set(t, i);
+  for (const r of i)
+    t.classList.add(r), o.delete(r);
+  for (const r of o)
+    t.classList.remove(r);
 }
-const rt = /* @__PURE__ */ new WeakMap();
-function yn(e, t, n) {
+const at = /* @__PURE__ */ new WeakMap();
+function Nn(e, t, n) {
   if (n === null || typeof n != "object")
-    throw TypeError(`Style value must be an object in ${de(t)}:`, n);
-  const r = rt.get(t) || /* @__PURE__ */ new Map(), s = /* @__PURE__ */ new Map();
-  for (const o of Object.keys(n)) {
-    const i = oe(o), a = n[o];
-    !a && a !== 0 ? t.style.removeProperty(i) : t.style.setProperty(i, a), s.set(i, a), r.delete(i);
+    throw TypeError(
+      `Style value must be an object in ${he(t)}:`,
+      n
+    );
+  const o = at.get(t) || /* @__PURE__ */ new Map(), i = /* @__PURE__ */ new Map();
+  for (const r of Object.keys(n)) {
+    const s = se(r), c = n[r];
+    !c && c !== 0 ? t.style.removeProperty(s) : t.style.setProperty(s, c), i.set(s, c), o.delete(s);
   }
-  for (const o of r.keys())
-    t.style[o] = "";
-  rt.set(t, s);
+  for (const r of o.keys())
+    t.style[r] = "";
+  at.set(t, i);
 }
-function wn(e, t, n) {
+function jn(e, t, n) {
   if (t.substr(0, 2) === "on") {
-    const r = t.substr(2);
-    return hn(r);
+    const o = t.substr(2);
+    return En(o);
   }
   switch (e) {
     case "class":
-      return bn;
+      return On;
     case "style":
-      return yn;
+      return Nn;
     default: {
-      let r = !1;
-      return (s, o, i) => {
-        if (r = r || !n && !(o instanceof globalThis.SVGElement) && t in o, r)
-          o[t] = i;
-        else if (i === !1 || i === void 0 || i === null)
-          o.removeAttribute(e);
+      let o = !1;
+      return (i, r, s) => {
+        if (o = o || !n && !(r instanceof globalThis.SVGElement) && t in r, o)
+          r[t] = s;
+        else if (s === !1 || s === void 0 || s === null)
+          r.removeAttribute(e);
         else {
-          const a = i === !0 ? "" : String(i);
-          o.setAttribute(e, a);
+          const c = s === !0 ? "" : String(s);
+          r.setAttribute(e, c);
         }
       };
     }
   }
 }
-const At = W("(\\d+)"), K = new RegExp(`^${At}$`), F = new RegExp(At, "g"), vn = /^[^A-Za-z]+$/;
-function Tn(e) {
+const Mt = _("(\\d+)"), K = new RegExp(`^${Mt}$`), U = new RegExp(Mt, "g"), Cn = /^[^A-Za-z]+$/;
+function Pn(e) {
   let t = e[0], n = !1;
-  for (let r = 1; r < e.length; r += 1)
-    n = n || e[r - 1].match(/<\s*(table|tr|thead|tbody|tfoot|colgroup)([^<>]|"[^"]*"|'[^']*')*>\s*$/), t += (n ? `<!--${W(r - 1)}-->` : W(r - 1)) + e[r], n = n && !e[r].match(/<\/\s*(table|tr|thead|tbody|tfoot|colgroup)\s*>/);
+  for (let o = 1; o < e.length; o += 1)
+    n = n || e[o - 1].match(
+      /<\s*(table|tr|thead|tbody|tfoot|colgroup)([^<>]|"[^"]*"|'[^']*')*>\s*$/
+    ), t += (n ? `<!--${_(o - 1)}-->` : _(o - 1)) + e[o], n = n && !e[o].match(/<\/\s*(table|tr|thead|tbody|tfoot|colgroup)\s*>/);
   return t;
 }
-function $n(e) {
+function An(e) {
   return e.replace(/\s*=\s*['"]*$/g, "").split(/\s+/).pop();
 }
-function ot(e) {
-  return globalThis.document.createTreeWalker(e, globalThis.NodeFilter.SHOW_ELEMENT | globalThis.NodeFilter.SHOW_TEXT | globalThis.NodeFilter.SHOW_COMMENT, null, !1);
+function ct(e) {
+  return globalThis.document.createTreeWalker(
+    e,
+    globalThis.NodeFilter.SHOW_ELEMENT | globalThis.NodeFilter.SHOW_TEXT | globalThis.NodeFilter.SHOW_COMMENT,
+    null,
+    !1
+  );
 }
-function En(e) {
-  let t = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 0;
+function Ln(e, t = 0) {
   e = e.replace(/(^[\n\s\t ]+)|([\n\s\t ]+$)+/g, "");
   let n = e.indexOf(`
 `);
   if (n > -1) {
-    let r = 0 - t - 2;
+    let o = 0 - t - 2;
     for (n += 1; e[n] === " " && n < e.length; n += 1)
-      r += 1;
-    return e.replace(/\n +/g, (s) => s.substr(0, Math.max(s.length - r, 1)));
+      o += 1;
+    return e.replace(
+      /\n +/g,
+      (i) => i.substr(0, Math.max(i.length - o, 1))
+    );
   }
   return e;
 }
-function st(e, t) {
-  const n = W(t);
-  return `${En(e).split(`
-`).filter((s) => s).map((s) => {
-    const o = s.indexOf(n);
-    return o > -1 ? `| ${s}
---${"-".repeat(o)}${"^".repeat(6)}` : `| ${s}`;
+function ft(e, t) {
+  const n = _(t);
+  return `${Ln(e).split(`
+`).filter((i) => i).map((i) => {
+    const r = i.indexOf(n);
+    return r > -1 ? `| ${i}
+--${"-".repeat(r)}${"^".repeat(6)}` : `| ${i}`;
   }).join(`
-`).replace(F, "${...}")}`;
+`).replace(U, "${...}")}`;
 }
-const it = /* @__PURE__ */ new Map(), lt = /* @__PURE__ */ new WeakMap();
-function Sn(e, t) {
-  const n = lt.get(e);
+const ut = /* @__PURE__ */ new Map(), dt = /* @__PURE__ */ new WeakMap();
+function kn(e, t) {
+  const n = dt.get(e);
   if (!n && !t)
     return;
-  const r = t && t.map((o) => {
-    let i = o;
-    return i instanceof globalThis.CSSStyleSheet || (i = it.get(o), i || (i = new globalThis.CSSStyleSheet(), i.replaceSync(o), it.set(o, i))), i;
+  const o = t && t.map((r) => {
+    let s = r;
+    return s instanceof globalThis.CSSStyleSheet || (s = ut.get(r), s || (s = new globalThis.CSSStyleSheet(), s.replaceSync(r), ut.set(r, s))), s;
   });
-  let s;
+  let i;
   if (n) {
-    if (r && r.length === n.length && r.every((o, i) => o === n[i]))
+    if (o && o.length === n.length && o.every((r, s) => r === n[s]))
       return;
-    s = e.adoptedStyleSheets.filter((o) => !n.includes(o));
+    i = e.adoptedStyleSheets.filter(
+      (r) => !n.includes(r)
+    );
   }
-  r && (s = (s || e.adoptedStyleSheets).concat(r)), e.adoptedStyleSheets = s, lt.set(e, r);
+  o && (i = (i || e.adoptedStyleSheets).concat(o)), e.adoptedStyleSheets = i, dt.set(e, o);
 }
-const Pe = /* @__PURE__ */ new WeakMap();
-function Lt(e, t) {
-  let n = Pe.get(e);
+const Le = /* @__PURE__ */ new WeakMap();
+function _t(e, t) {
+  let n = Le.get(e);
   if (t) {
-    (!n || n.parentNode !== e) && (n = globalThis.document.createElement("style"), Pe.set(e, n), e = Te(e), e.nodeType === globalThis.Node.TEXT_NODE ? e.parentNode.insertBefore(n, e.nextSibling) : e.appendChild(n));
-    const r = [...t].join(`
+    (!n || n.parentNode !== e) && (n = globalThis.document.createElement("style"), Le.set(e, n), e = Se(e), e.nodeType === globalThis.Node.TEXT_NODE ? e.parentNode.insertBefore(n, e.nextSibling) : e.appendChild(n));
+    const o = [...t].join(`
 /*------*/
 `);
-    n.textContent !== r && (n.textContent = r);
+    n.textContent !== o && (n.textContent = o);
   } else
-    n && (n.parentNode.removeChild(n), Pe.set(e, null));
+    n && (n.parentNode.removeChild(n), Le.set(e, null));
 }
-const at = /* @__PURE__ */ new WeakMap();
-function xn(e, t) {
-  let n = at.get(e);
-  n || (n = e.adoptedStyleSheets ? Sn : Lt, at.set(e, n)), n(e, t);
+const pt = /* @__PURE__ */ new WeakMap();
+function Rn(e, t) {
+  let n = pt.get(e);
+  n || (n = e.adoptedStyleSheets ? kn : _t, pt.set(e, n)), n(e, t);
 }
-function On(e, t, n, r) {
-  let s = globalThis.document.createElement("template");
-  const o = {}, i = n ? e : Tn(e);
-  if (s.innerHTML = t ? `<svg>${i}</svg>` : i, t) {
-    const f = s.content.firstChild;
-    s.content.removeChild(f);
-    for (const g of Array.from(f.childNodes))
-      s.content.appendChild(g);
+function Mn(e, t, n, o) {
+  let i = globalThis.document.createElement("template");
+  const r = {}, s = n ? e : Pn(e);
+  if (i.innerHTML = t ? `<svg>${s}</svg>` : s, t) {
+    const u = i.content.firstChild;
+    i.content.removeChild(u);
+    for (const d of Array.from(u.childNodes))
+      i.content.appendChild(d);
   }
-  let a;
-  const c = s.content.children[0];
-  if (c instanceof globalThis.HTMLTemplateElement) {
-    for (const f of Array.from(c.attributes)) {
-      const g = f.value.trim();
-      if (g && f.name.startsWith("layout")) {
-        if (g.match(F))
+  let c;
+  const f = i.content.children[0];
+  if (f instanceof globalThis.HTMLTemplateElement) {
+    for (const u of Array.from(f.attributes)) {
+      const d = u.value.trim();
+      if (d && u.name.startsWith("layout")) {
+        if (d.match(U))
           throw Error("Layout attribute cannot contain expressions");
-        a = et(c, f.name.substr(6), g, !0);
+        c = it(
+          f,
+          u.name.substr(6),
+          d,
+          !0
+        );
       }
     }
-    if (a !== void 0 && s.content.children.length > 1)
-      throw Error("Template, which uses layout system must have only the '<template>' root element");
-    r = a || c.hasAttribute("layout"), s = c;
+    if (c !== void 0 && i.content.children.length > 1)
+      throw Error(
+        "Template, which uses layout system must have only the '<template>' root element"
+      );
+    o = c || f.hasAttribute("layout"), i = f;
   }
-  const p = ot(s.content), d = [];
-  let l = 0, u = null;
-  for (; p.nextNode(); ) {
-    let f = p.currentNode;
-    if (u && !u.contains(f) && (u = null), f.nodeType === globalThis.Node.COMMENT_NODE && K.test(f.textContent) && (f.parentNode.insertBefore(globalThis.document.createTextNode(f.textContent), f.nextSibling), p.nextNode(), f.parentNode.removeChild(f), f = p.currentNode), f.nodeType === globalThis.Node.TEXT_NODE) {
-      let g = f.textContent;
-      const y = g.match(K);
+  const h = ct(i.content), b = [];
+  let l = 0, a = null;
+  for (; h.nextNode(); ) {
+    let u = h.currentNode;
+    if (a && !a.contains(u) && (a = null), u.nodeType === globalThis.Node.COMMENT_NODE && K.test(u.textContent) && (u.parentNode.insertBefore(
+      globalThis.document.createTextNode(u.textContent),
+      u.nextSibling
+    ), h.nextNode(), u.parentNode.removeChild(u), u = h.currentNode), u.nodeType === globalThis.Node.TEXT_NODE) {
+      let d = u.textContent;
+      const y = d.match(K);
       if (y)
-        f.textContent = "", o[y[1]] = [l, re];
+        u.textContent = "", r[y[1]] = [l, ie];
       else {
-        if (Fn() && !n && !u && !g.match(/^\s*$/)) {
-          let T;
-          const w = g.trim(), m = w.replace(/\s+/g, " ").replace(F, (v, E) => (E = Number(E), T === void 0 && (T = E), `\${${E - T}}`));
-          if (!m.match(vn)) {
-            let v = f.previousSibling && f.previousSibling.nodeType === globalThis.Node.COMMENT_NODE ? f.previousSibling : "";
-            v && (v.parentNode.removeChild(v), l -= 1, v = (v.textContent.split("|")[1] || "").trim().replace(/\s+/g, " "));
-            const E = Jn(m, v).replace(/\${(\d+)}/g, (R, P) => W(Number(P) + T));
-            g = g.replace(w, E), f.textContent = g;
+        if (Qn() && !n && !a && !d.match(/^\s*$/)) {
+          let w;
+          const m = d.trim(), v = m.replace(/\s+/g, " ").replace(U, ($, T) => (T = Number(T), w === void 0 && (w = T), `\${${T - w}}`));
+          if (!v.match(Cn)) {
+            let $ = u.previousSibling && u.previousSibling.nodeType === globalThis.Node.COMMENT_NODE ? u.previousSibling : "";
+            $ && ($.parentNode.removeChild($), l -= 1, $ = ($.textContent.split("|")[1] || "").trim().replace(/\s+/g, " "));
+            const T = Zn(v, $).replace(
+              /\${(\d+)}/g,
+              (S, O) => _(Number(O) + w)
+            );
+            d = d.replace(m, T), u.textContent = d;
           }
         }
-        const b = g.match(F);
-        if (b) {
-          let T = f;
-          b.reduce((w, m) => {
-            const [v, E] = w.pop().split(m);
-            return v && w.push(v), w.push(m), E && w.push(E), w;
-          }, [g]).forEach((w, m) => {
-            m === 0 ? T.textContent = w : (T = T.parentNode.insertBefore(globalThis.document.createTextNode(w), T.nextSibling), p.currentNode = T, l += 1);
-            const v = T.textContent.match(K);
-            v && (T.textContent = "", o[v[1]] = [l, re]);
+        const g = d.match(U);
+        if (g) {
+          let w = u;
+          g.reduce(
+            (m, v) => {
+              const [$, T] = m.pop().split(v);
+              return $ && m.push($), m.push(v), T && m.push(T), m;
+            },
+            [d]
+          ).forEach((m, v) => {
+            v === 0 ? w.textContent = m : (w = w.parentNode.insertBefore(
+              globalThis.document.createTextNode(m),
+              w.nextSibling
+            ), h.currentNode = w, l += 1);
+            const $ = w.textContent.match(
+              K
+            );
+            $ && (w.textContent = "", r[$[1]] = [l, ie]);
           });
         }
       }
-    } else if (f.nodeType === globalThis.Node.ELEMENT_NODE) {
-      if (!u && (f.getAttribute("translate") === "no" || f.tagName.toLowerCase() === "script" || f.tagName.toLowerCase() === "style") && (u = f), Ae) {
-        const g = f.tagName.toLowerCase();
-        g.match(/.+-.+/) && !globalThis.customElements.get(g) && !d.includes(g) && d.push(g);
+    } else if (u.nodeType === globalThis.Node.ELEMENT_NODE) {
+      if (!a && (u.getAttribute("translate") === "no" || u.tagName.toLowerCase() === "script" || u.tagName.toLowerCase() === "style") && (a = u), Re) {
+        const d = u.tagName.toLowerCase();
+        d.match(/.+-.+/) && !globalThis.customElements.get(d) && !b.includes(d) && b.push(d);
       }
-      for (const g of Array.from(f.attributes)) {
-        const y = g.value.trim(), b = g.name;
-        if (r && b.startsWith("layout") && y) {
-          if (y.match(F))
+      for (const d of Array.from(u.attributes)) {
+        const y = d.value.trim(), g = d.name;
+        if (o && g.startsWith("layout") && y) {
+          if (y.match(U))
             throw Error("Layout attribute cannot contain expressions");
-          const w = et(f, b.substr(6), y);
-          f.removeAttribute(b), f.classList.add(w);
+          const m = it(u, g.substr(6), y);
+          u.removeAttribute(g), u.classList.add(m);
           continue;
         }
-        const T = y.match(K);
-        if (T) {
-          const w = $n(e[T[1]]);
-          o[T[1]] = [l, wn(b, w, t)], f.removeAttribute(g.name);
+        const w = y.match(K);
+        if (w) {
+          const m = An(e[w[1]]);
+          r[w[1]] = [
+            l,
+            jn(g, m, t)
+          ], u.removeAttribute(d.name);
         } else {
-          const w = y.match(F);
-          if (w) {
-            const m = `attr__${b}`;
-            for (const [v, E] of w.entries()) {
-              const [, R] = E.match(K);
-              let P = !1;
-              o[R] = [l, (J, C, A) => {
-                const L = I(C);
-                L[m] = (L[m] || y).replace(E, A ?? ""), (w.length === 1 || v + 1 === w.length) && (P = P || !t && !(C instanceof globalThis.SVGElement) && b in C, P ? C[b] = L[m] : C.setAttribute(b, L[m]), L[m] = void 0);
-              }];
+          const m = y.match(U);
+          if (m) {
+            const v = `attr__${g}`;
+            for (const [$, T] of m.entries()) {
+              const [, S] = T.match(K);
+              let O = !1;
+              r[S] = [
+                l,
+                (C, N, k) => {
+                  const z = D(N);
+                  z[v] = (z[v] || y).replace(
+                    T,
+                    k ?? ""
+                  ), (m.length === 1 || $ + 1 === m.length) && (O = O || !t && !(N instanceof globalThis.SVGElement) && g in N, O ? N[g] = z[v] : N.setAttribute(g, z[v]), z[v] = void 0);
+                }
+              ];
             }
-            g.value = "";
+            d.value = "";
           }
         }
       }
     }
     l += 1;
   }
-  Ae && d.length && console.warn(`Not defined ${d.map((f) => `<${f}>`).join(", ")} element${d.length > 1 ? "s" : ""} found in the template:
-${st(i, -1)}`);
-  const h = Object.keys(o);
-  return function(g, y, b, T) {
-    let {
-      styleSheets: w
-    } = T, m = I(y);
-    if (s !== m.template) {
-      const v = globalThis.document.importNode(s.content, !0), E = ot(v), R = [];
-      let P = 0, J = 0, C = o[h[J]];
-      for (; E.nextNode(); ) {
-        const A = E.currentNode;
-        for (; C && C[0] === P; )
-          R.push({
-            index: h[J],
-            node: A,
+  Re && b.length && console.warn(
+    `Not defined ${b.map((u) => `<${u}>`).join(", ")} element${b.length > 1 ? "s" : ""} found in the template:
+${ft(s, -1)}`
+  );
+  const p = Object.keys(r);
+  return function(d, y, g, { styleSheets: w }) {
+    let m = D(y);
+    if (i !== m.template) {
+      const v = globalThis.document.importNode(i.content, !0), $ = ct(v), T = [];
+      let S = 0, O = 0, C = r[p[O]];
+      for (; $.nextNode(); ) {
+        const N = $.currentNode;
+        for (; C && C[0] === S; )
+          T.push({
+            index: p[O],
+            node: N,
             fn: C[1]
-          }), J += 1, C = o[h[J]];
-        P += 1;
+          }), O += 1, C = r[p[O]];
+        S += 1;
       }
-      if (m.hostLayout && g.classList.remove(m.hostLayout), ne(y), m = I(y), m.template = s, m.markers = R, y.nodeType === globalThis.Node.TEXT_NODE) {
-        Lt(y), m.startNode = v.childNodes[0], m.endNode = v.childNodes[v.childNodes.length - 1];
-        let A = y, L = v.childNodes[0];
-        for (; L; )
-          y.parentNode.insertBefore(L, A.nextSibling), A = L, L = v.childNodes[0];
+      if (m.hostLayout && d.classList.remove(m.hostLayout), re(y), m = D(y), m.template = i, m.markers = T, y.nodeType === globalThis.Node.TEXT_NODE) {
+        _t(y), m.startNode = v.childNodes[0], m.endNode = v.childNodes[v.childNodes.length - 1];
+        let N = y, k = v.childNodes[0];
+        for (; k; )
+          y.parentNode.insertBefore(k, N.nextSibling), N = k, k = v.childNodes[0];
       } else {
-        if (r) {
-          const A = `${a}-${g === y ? "c" : "s"}`;
-          g.classList.add(A), m.hostLayout = A;
+        if (o) {
+          const N = `${c}-${d === y ? "c" : "s"}`;
+          d.classList.add(N), m.hostLayout = N;
         }
         y.appendChild(v);
       }
-      r && fn(y);
+      o && vn(y);
     }
-    xn(y, w);
+    Rn(y, w);
     for (const v of m.markers) {
-      const E = b[v.index], R = m.prevArgs && m.prevArgs[v.index];
-      if (!(m.prevArgs && E === R))
+      const $ = g[v.index], T = m.prevArgs && m.prevArgs[v.index];
+      if (!(m.prevArgs && $ === T))
         try {
-          v.fn(g, v.node, E, R, r);
-        } catch (P) {
-          throw console.error(`Error while updating template expression in ${de(g)}:
-${st(i, v.index)}`), P;
+          v.fn(d, v.node, $, T, o);
+        } catch (S) {
+          throw console.error(
+            `Error while updating template expression in ${he(
+              d
+            )}:
+${ft(s, v.index)}`
+          ), S;
         }
     }
-    m.prevArgs = b;
+    m.prevArgs = g;
   };
 }
-const Ce = /* @__PURE__ */ new WeakMap();
-function Nn(e, t) {
-  let n = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : 200;
-  return function r(s, o) {
-    const i = r.useLayout;
-    let a;
-    t && (a = setTimeout(() => {
-      a = void 0, re(s, o, t, void 0, i);
-    }, n)), Ce.set(o, e), e.then((c) => {
-      a && clearTimeout(a), Ce.get(o) === e && (re(s, o, c, t && !a ? t : void 0, i), Ce.set(o, null));
+const ke = /* @__PURE__ */ new WeakMap();
+function _n(e, t, n = 200) {
+  return function o(i, r) {
+    const s = o.useLayout;
+    let c;
+    t && (c = setTimeout(() => {
+      c = void 0, ie(i, r, t, void 0, s);
+    }, n)), ke.set(r, e), e.then((f) => {
+      c && clearTimeout(c), ke.get(r) === e && (ie(
+        i,
+        r,
+        f,
+        t && !c ? t : void 0,
+        s
+      ), ke.set(r, null));
     });
   };
 }
-function ut(e, t) {
-  let {
-    target: n,
-    detail: r
-  } = e, s;
-  switch (n.type) {
+function ht({ target: e, detail: t }, n) {
+  let o;
+  switch (e.type) {
     case "radio":
     case "checkbox":
-      s = n.checked && n.value;
+      o = e.checked && e.value;
       break;
     case "file":
-      s = n.files;
+      o = e.files;
       break;
     default:
-      s = r && hasOwnProperty.call(r, "value") ? r.value : n.value;
+      o = t && hasOwnProperty.call(t, "value") ? t.value : e.value;
   }
-  t(s);
+  n(o);
 }
-function jn(e, t) {
-  return e.split(".").reverse().reduce((n, r) => n ? {
-    [r]: n
-  } : {
-    [r]: t
-  }, null);
+function zn(e, t) {
+  return e.split(".").reverse().reduce((n, o) => n ? { [o]: n } : { [o]: t }, null);
 }
-const ct = /* @__PURE__ */ new Map();
-function Pn(e, t) {
+const bt = /* @__PURE__ */ new Map();
+function Dn(e, t) {
   if (!e)
-    throw Error(`The first argument must be a property name or an object instance: ${e}`);
+    throw Error(
+      `The first argument must be a property name or an object instance: ${e}`
+    );
   if (typeof e == "object") {
     if (t === void 0)
-      throw Error("For model instance property the second argument must be defined");
-    const r = ke.get(e);
-    if (!r)
+      throw Error(
+        "For model instance property the second argument must be defined"
+      );
+    const o = Ve.get(e);
+    if (!o)
       throw Error("Provided object must be a model instance of the store");
     return t === null ? () => {
-      r.set(e, null);
-    } : (s, o) => {
-      ut(o, (i) => {
-        r.set(e, jn(t, i));
+      o.set(e, null);
+    } : (i, r) => {
+      ht(r, (s) => {
+        o.set(e, zn(t, s));
       });
     };
   }
   if (arguments.length === 2)
-    return (r) => {
-      r[e] = t;
+    return (o) => {
+      o[e] = t;
     };
-  let n = ct.get(e);
-  return n || (n = (r, s) => {
-    ut(s, (o) => {
-      r[e] = o;
+  let n = bt.get(e);
+  return n || (n = (o, i) => {
+    ht(i, (r) => {
+      o[e] = r;
     });
-  }, ct.set(e, n)), n;
+  }, bt.set(e, n)), n;
 }
-let ce;
-const Cn = globalThis.document && globalThis.document.startViewTransition !== void 0 && function(t) {
-  return function n(r, s) {
-    if (ce) {
-      console.warn(`${de(r)}: view transition already started in ${de(ce)}`), t(r, s);
+let de;
+const Wn = globalThis.document && globalThis.document.startViewTransition !== void 0 && function(t) {
+  return function n(o, i) {
+    if (de) {
+      console.warn(
+        `${he(
+          o
+        )}: view transition already started in ${he(de)}`
+      ), t(o, i);
       return;
     }
-    t.useLayout = n.useLayout, ce = r, globalThis.document.startViewTransition(() => (t(r, s), be.then(() => {
-      ce = void 0;
+    t.useLayout = n.useLayout, de = o, globalThis.document.startViewTransition(() => (t(o, i), we.then(() => {
+      de = void 0;
     })));
   };
 } || // istanbul ignore next
-((e) => e), An = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+((e) => e), In = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  resolve: Nn,
-  set: Pn,
-  transition: Cn
-}, Symbol.toStringTag, {
-  value: "Module"
-}));
-function Ln(e) {
+  resolve: _n,
+  set: Dn,
+  transition: Wn
+}, Symbol.toStringTag, { value: "Module" }));
+function Bn(e) {
   return this.id = e, this;
 }
-function Mn() {
-  return this.styleSheets = this.styleSheets || [], this.styleSheets.push(...arguments), this;
+function Fn(...e) {
+  return this.styleSheets = this.styleSheets || [], this.styleSheets.push(...e), this;
 }
-function zn(e) {
+function Vn(e, ...t) {
   this.styleSheets = this.styleSheets || [];
-  let t = e[0];
-  for (let n = 1; n < e.length; n++)
-    t += ((n - 1 + 1 < 1 || arguments.length <= n - 1 + 1 ? void 0 : arguments[n - 1 + 1]) !== void 0 ? n - 1 + 1 < 1 || arguments.length <= n - 1 + 1 ? void 0 : arguments[n - 1 + 1] : "") + e[n];
-  return this.styleSheets.push(t), this;
+  let n = e[0];
+  for (let o = 1; o < e.length; o++)
+    n += (t[o - 1] !== void 0 ? t[o - 1] : "") + e[o];
+  return this.styleSheets.push(n), this;
 }
-function Wn(e) {
+function Un(e) {
   return this.plugins = this.plugins || [], this.plugins.push(e), this;
 }
-const Rn = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const Xn = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  css: zn,
-  key: Ln,
-  style: Mn,
-  use: Wn
-}, Symbol.toStringTag, {
-  value: "Module"
-})), In = W(), Dn = W("svg"), kn = W("msg"), _n = W("layout"), ft = /* @__PURE__ */ new Map();
-function Vn(e, t, n, r) {
-  function s(o) {
-    let i = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : o, a = r ? e + kn : e.join(In);
-    n && (a += Dn);
-    const c = s.useLayout;
-    c && (a += _n);
-    let p = ft.get(a);
-    p || (p = On(e, n, r, c), ft.set(a, p)), s.plugins ? s.plugins.reduce((d, l) => l(d), () => p(o, i, t, s))(o, i) : p(o, i, t, s);
+  css: Vn,
+  key: Bn,
+  style: Fn,
+  use: Un
+}, Symbol.toStringTag, { value: "Module" })), Jn = _(), qn = _("svg"), Kn = _("msg"), Gn = _("layout"), mt = /* @__PURE__ */ new Map();
+function Hn(e, t, n, o) {
+  function i(r, s = r) {
+    let c = o ? e + Kn : e.join(Jn);
+    n && (c += qn);
+    const f = i.useLayout;
+    f && (c += Gn);
+    let h = mt.get(c);
+    h || (h = Mn(e, n, o, f), mt.set(c, h)), i.plugins ? i.plugins.reduce(
+      (b, l) => l(b),
+      () => h(r, s, t, i)
+    )(r, s) : h(r, s, t, i);
   }
-  return Object.assign(s, Rn);
+  return Object.assign(i, Xn);
 }
-function Je(e) {
-  for (var t = arguments.length, n = new Array(t > 1 ? t - 1 : 0), r = 1; r < t; r++)
-    n[r - 1] = arguments[r];
-  return Vn(e, n, !1, !1);
+function Ee(e, ...t) {
+  return Hn(e, t, !1, !1);
 }
-Object.freeze(Object.assign(Je, An));
-const fe = /* @__PURE__ */ new Map(), dt = /* @__PURE__ */ new Map();
-let Mt = null;
-const Bn = (() => {
+Object.freeze(Object.assign(Ee, In));
+const pe = /* @__PURE__ */ new Map(), gt = /* @__PURE__ */ new Map();
+let zt = null;
+const Yn = (() => {
   let e;
   try {
     e = globalThis.navigator.languages || [globalThis.navigator.language];
@@ -1952,78 +2036,332 @@ const Bn = (() => {
     e = [];
   }
   return e.reduce((t, n) => {
-    const r = n.split("-")[0];
-    return t.add(n), n !== r && t.add(r), t;
+    const o = n.split("-")[0];
+    return t.add(n), n !== o && t.add(o), t;
   }, /* @__PURE__ */ new Set());
 })();
-function Fn() {
-  return Mt !== null || fe.size;
+function Qn() {
+  return zt !== null || pe.size;
 }
-const gt = /* @__PURE__ */ new Map();
-function Jn(e, t) {
-  let n = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : [];
+const yt = /* @__PURE__ */ new Map();
+function Zn(e, t, n = []) {
   e = e.trim().replace(/\s+/g, " "), t = t.trim();
-  const r = `${e} | ${t}`;
-  let s = dt.get(r);
-  if (!s) {
-    if (fe.size)
-      for (const o of Bn) {
-        const i = fe.get(o);
-        if (i && (s = i[r] || i[e], s)) {
-          if (s = s.message, typeof s == "object") {
-            let a = gt.get(o);
-            a || (a = new Intl.PluralRules(o), gt.set(o, a));
-            const c = s;
-            s = (p) => p === 0 && c.zero || c[a.select(p)] || c.other || "";
+  const o = `${e} | ${t}`;
+  let i = gt.get(o);
+  if (!i) {
+    if (pe.size)
+      for (const r of Yn) {
+        const s = pe.get(r);
+        if (s && (i = s[o] || s[e], i)) {
+          if (i = i.message, typeof i == "object") {
+            let c = yt.get(r);
+            c || (c = new Intl.PluralRules(r), yt.set(r, c));
+            const f = i;
+            i = (h) => h === 0 && f.zero || f[c.select(h)] || f.other || "";
           }
           break;
         }
       }
-    s || s || (s = e, (fe.size || Mt) && Ae && console.warn(`Missing translation: "${e}"${t ? ` [${t}]` : ""}`)), dt.set(r, s);
+    i || i || (i = e, (pe.size || zt) && Re && console.warn(
+      `Missing translation: "${e}"${t ? ` [${t}]` : ""}`
+    )), gt.set(o, i);
   }
-  return typeof s == "function" ? s(n[0]) : s;
+  return typeof i == "function" ? i(n[0]) : i;
 }
-const zt = {
-  title: "",
-  description: "",
-  expectedBehaviour: ""
+var Dt = typeof globalThis < "u" ? globalThis : typeof window < "u" ? window : typeof global < "u" ? global : typeof self < "u" ? self : {}, Fe = { exports: {} };
+(function(e, t) {
+  (function(n, o) {
+    o(t);
+  })(Dt, function(n) {
+    const o = () => {
+      var a;
+      return !!(!((a = navigator.mediaDevices) === null || a === void 0) && a.getDisplayMedia);
+    };
+    /*! *****************************************************************************
+    	    Copyright (c) Microsoft Corporation.
+    
+    	    Permission to use, copy, modify, and/or distribute this software for any
+    	    purpose with or without fee is hereby granted.
+    
+    	    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+    	    REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+    	    AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+    	    INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+    	    LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+    	    OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+    	    PERFORMANCE OF THIS SOFTWARE.
+    	    ***************************************************************************** */
+    function i(a, p, u, d) {
+      function y(g) {
+        return g instanceof u ? g : new u(function(w) {
+          w(g);
+        });
+      }
+      return new (u || (u = Promise))(function(g, w) {
+        function m(T) {
+          try {
+            $(d.next(T));
+          } catch (S) {
+            w(S);
+          }
+        }
+        function v(T) {
+          try {
+            $(d.throw(T));
+          } catch (S) {
+            w(S);
+          }
+        }
+        function $(T) {
+          T.done ? g(T.value) : y(T.value).then(m, v);
+        }
+        $((d = d.apply(a, p || [])).next());
+      });
+    }
+    const r = (a) => {
+      const p = document.createElement("video");
+      return p.autoplay = !0, p.muted = !0, p.playsInline = !0, p.srcObject = a, p.setAttribute("style", "position:fixed;top:0;left:0;pointer-events:none;visibility:hidden;"), p;
+    }, s = (a) => {
+      var p, u, d;
+      const y = (p = a.srcObject) === null || p === void 0 ? void 0 : p.getTracks()[0].getSettings(), g = document.createElement("canvas");
+      g.width = (u = y == null ? void 0 : y.width) !== null && u !== void 0 ? u : 0, g.height = (d = y == null ? void 0 : y.height) !== null && d !== void 0 ? d : 0;
+      const w = g.getContext("2d");
+      return w == null || w.drawImage(a, 0, 0), g;
+    }, c = (a) => {
+      const p = document.createElement("audio");
+      p.loop = !1, p.src = a, p.play(), p.remove();
+    }, f = (a = 300) => new Promise((p) => {
+      setTimeout(p, a);
+    }), h = (a) => {
+      var p;
+      const u = (p = a.srcObject) === null || p === void 0 ? void 0 : p.getTracks();
+      u == null || u.forEach((d) => d.stop()), a.srcObject = null, a.remove();
+    }, b = (a) => i(void 0, void 0, void 0, function* () {
+      return yield f(), document.hasFocus() ? a : b(a);
+    }), l = ({ onCaptureEnd: a, onCaptureStart: p, quality: u = 0.7, type: d = "image/jpeg", soundEffectUrl: y } = {}) => i(void 0, void 0, void 0, function* () {
+      return yield p == null ? void 0 : p(), navigator.mediaDevices.getDisplayMedia({
+        // This is actually supported, but only in Chrome so not yet part of the TS typedefs, so
+        // @ts-ignore
+        preferCurrentTab: !0,
+        video: { frameRate: 30 }
+      }).then(b).then((g) => i(void 0, void 0, void 0, function* () {
+        const w = r(g);
+        document.body.appendChild(w), y && c(y), yield f();
+        const m = s(w), v = m.toDataURL(d, u);
+        return h(w), m.remove(), yield a == null ? void 0 : a(), v;
+      }));
+    });
+    n.checkIfBrowserSupported = o, n.takeScreenshot = l, Object.defineProperty(n, "__esModule", { value: !0 });
+  });
+})(Fe, Fe.exports);
+var wt = Fe.exports, eo = { exports: {} };
+(function(e, t) {
+  (function(n, o) {
+    e.exports = o();
+  })(Dt, function() {
+    return function n(o, i, r) {
+      var s = window, c = "application/octet-stream", f = r || c, h = o, b = !i && !r && h, l = document.createElement("a"), a = function(S) {
+        return String(S);
+      }, p = s.Blob || s.MozBlob || s.WebKitBlob || a, u = i || "download", d, y;
+      if (p = p.call ? p.bind(s) : Blob, String(this) === "true" && (h = [h, f], f = h[0], h = h[1]), b && b.length < 2048 && (u = b.split("/").pop().split("?")[0], l.href = b, l.href.indexOf(b) !== -1)) {
+        var g = new XMLHttpRequest();
+        return g.open("GET", b, !0), g.responseType = "blob", g.onload = function(S) {
+          n(S.target.response, u, c);
+        }, setTimeout(function() {
+          g.send();
+        }, 0), g;
+      }
+      if (/^data:([\w+-]+\/[\w+.-]+)?[,;]/.test(h))
+        if (h.length > 1024 * 1024 * 1.999 && p !== a)
+          h = $(h), f = h.type || c;
+        else
+          return navigator.msSaveBlob ? (
+            // IE10 can't do a[download], only Blobs:
+            navigator.msSaveBlob($(h), u)
+          ) : T(h);
+      else if (/([\x80-\xff])/.test(h)) {
+        var w = 0, m = new Uint8Array(h.length), v = m.length;
+        for (w; w < v; ++w)
+          m[w] = h.charCodeAt(w);
+        h = new p([m], { type: f });
+      }
+      d = h instanceof p ? h : new p([h], { type: f });
+      function $(S) {
+        var O = S.split(/[:;,]/), C = O[1], N = O[2] == "base64" ? atob : decodeURIComponent, k = N(O.pop()), z = k.length, J = 0, Ge = new Uint8Array(z);
+        for (J; J < z; ++J)
+          Ge[J] = k.charCodeAt(J);
+        return new p([Ge], { type: C });
+      }
+      function T(S, O) {
+        if ("download" in l)
+          return l.href = S, l.setAttribute("download", u), l.className = "download-js-link", l.innerHTML = "downloading...", l.style.display = "none", document.body.appendChild(l), setTimeout(function() {
+            l.click(), document.body.removeChild(l), O === !0 && setTimeout(function() {
+              s.URL.revokeObjectURL(l.href);
+            }, 250);
+          }, 66), !0;
+        if (/(Version)\/(\d+)\.(\d+)(?:\.(\d+))?.*Safari\//.test(navigator.userAgent))
+          return /^data:/.test(S) && (S = "data:" + S.replace(/^data:([\w\/\-\+]+)/, c)), window.open(S) || confirm(`Displaying New Document
+
+Use Save As... to download, then click back to return to this page.`) && (location.href = S), !0;
+        var C = document.createElement("iframe");
+        document.body.appendChild(C), !O && /^data:/.test(S) && (S = "data:" + S.replace(/^data:([\w\/\-\+]+)/, c)), C.src = S, setTimeout(function() {
+          document.body.removeChild(C);
+        }, 333);
+      }
+      if (navigator.msSaveBlob)
+        return navigator.msSaveBlob(d, u);
+      if (s.URL)
+        T(s.URL.createObjectURL(d), !0);
+      else {
+        if (typeof d == "string" || d.constructor === a)
+          try {
+            return T("data:" + f + ";base64," + s.btoa(d));
+          } catch {
+            return T("data:" + f + "," + encodeURIComponent(d));
+          }
+        y = new FileReader(), y.onload = function(S) {
+          T(this.result);
+        }, y.readAsDataURL(d);
+      }
+      return !0;
+    };
+  });
+})(eo);
+const Wt = "4a3fb7dc39032a123e911f41fc0c17e3", It = "ATTA9c52ab7e727e26698f5ef71b9c2a1102cf0e598221b773cbfd549376ddc516661169EF54", to = "https://api.trello.com/1", no = `key=${Wt}&token=${It}`, Bt = {
+  name: "Name",
+  desc: "Description",
+  expectedBehaviour: "Expected Behaviour"
+}, Ft = {
+  name: "",
+  desc: ""
 };
-function Xn(e, t) {
-  t.preventDefault(), console.log(Pt.get(zt));
+function oo() {
+  const e = `
+  **Name:** ${X.name}
+  **Description:** ${X.desc}
+  **Expected Behaviour:** ${X.expectedBehaviour}
+  `;
+  return {
+    ...X.get(Ft),
+    desc: e,
+    pos: "bottom"
+  };
 }
-function Kn(e, t) {
-  Pt.set(zt, {
-    [t.target.name]: t.target.value
-  }).then((n) => {
-    console.log(n, t.target.name, t.target.value);
+function ro(e) {
+  return fetch(e).then((t) => t.blob()).then((t) => new File([t], "Screenshot", { type: "image/png" }));
+}
+function io(e, t) {
+  const n = new FormData();
+  n.append("name", "Screenshot"), n.append("file", t), n.append("mimeType", "image/png"), n.append("key", Wt), n.append("token", It);
+  const o = new XMLHttpRequest();
+  o.responseType = "json", o.onreadystatechange = function() {
+    o.readyState === 4 && console.log(`Successfully uploaded at: ${o.response.date}`);
+  }, o.open("POST", `https://api.trello.com/1/cards/${cardId}/attachments/`), o.send(n);
+}
+function so(e, t) {
+  t.preventDefault();
+  const n = `${to}/cards?idList=${e.idlist}&${no}`, o = oo();
+  fetch(n, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      ...X.get(o)
+    })
+  }).then((i) => i.json()).then((i) => {
+    wt.checkIfBrowserSupported() && wt.takeScreenshot().then(ro).then((r) => {
+      console.log(r), io(i.id, r);
+    });
   });
 }
-Tt({
+function Vt(e, t) {
+  X.set(Ft, { [t.target.name]: t.target.value });
+}
+Ue({
   tag: "lunar-bug-tool",
-  render: () => Je`
-    <form onsubmit="${Xn}">
-      <lunar-bug-tool-input name="title"></lunar-bug-tool-input>
-      <lunar-bug-tool-input name="description"></lunar-bug-tool-input>
-      <lunar-bug-tool-input name="expectedBehaviour"></lunar-bug-tool-input>
+  idlist: "",
+  render: () => Ee`
+    <div class="lunar-bug-tool">
+      <h4>Report a bug</h4>
+      <form onsubmit="${so}">
+        <lunar-bug-tool-input name="name"></lunar-bug-tool-input>
+        <lunar-bug-tool-textarea name="desc"></lunar-bug-tool-textarea>
+        <lunar-bug-tool-textarea
+          name="expectedBehaviour"
+        ></lunar-bug-tool-textarea>
 
-      <button>Submit</button>
-    </form>
+        <button>Submit</button>
+      </form>
+    </div>
+  `.css`
+    form {
+      margin: .5rem 0;
+    }
+
+    .lunar-bug-tool {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      padding: 0 1rem .5rem;
+      font-family: 'Gotham Rounded', Arial, sans-serif;
+      background: linear-gradient(45deg, #272c40, #485b9c 200%);
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.8);
+    }
+
+    .lunar-bug-tool h4 {
+      color: white;
+    }
   `
 });
-Tt({
+Ue({
   tag: "lunar-bug-tool-input",
   name: "",
   value: "",
-  render: (e) => {
-    let {
-      value: t,
-      name: n
-    } = e;
-    return Je`
+  render: ({ value: e, name: t }) => Ee`
     <div>
-      <input type="text" name="${n}" value="${t}" oninput="${Kn}" />
+      <label>${Bt[t]}</label>
+      <input
+        type="text"
+        name="${t}"
+        value="${e}"
+        oninput="${Vt}"
+      />
     </div>
-  `;
-  }
+  `.css`
+    label {
+      display: block;
+      color: white;
+    }
+    input {
+      display: block;
+      margin-bottom: 1rem;
+    }
+  `
 });
-document.body.appendChild(document.createElement("lunar-bug-tool"));
+Ue({
+  tag: "lunar-bug-tool-textarea",
+  name: "",
+  value: "",
+  render: ({ value: e, name: t }) => Ee`
+    <div>
+      <label>${Bt[t]}</label>
+      <textarea
+        type="text"
+        name="${t}"
+        value="${e}"
+        oninput="${Vt}"
+      ></textarea>
+    </div>
+  `.css`
+    label {
+      display: block;
+      color: white;
+    }
+    textarea {
+      display: block;
+      margin-bottom: 1rem;
+    }
+  `
+});
