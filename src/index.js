@@ -1,6 +1,8 @@
-import { html, define, parent, store } from "hybrids";
+import { html, define, store } from "hybrids";
 import { takeScreenshot, checkIfBrowserSupported } from "@xata.io/screenshot";
-import download from "downloadjs";
+import TextArea from "./components/TextArea";
+import Input from "./components/Input";
+import FormStore from "./store/store";
 
 const key = "4a3fb7dc39032a123e911f41fc0c17e3";
 const token =
@@ -8,17 +10,6 @@ const token =
 
 const apiRoot = "https://api.trello.com/1";
 const apiCreds = `key=${key}&token=${token}`;
-
-const labels = {
-  name: "Name",
-  desc: "Description",
-  expectedBehaviour: "Expected Behaviour",
-};
-
-const FormStore = {
-  name: "",
-  desc: "",
-};
 
 function getPayload() {
   // Markdown
@@ -93,10 +84,6 @@ function onSubmit(host, e) {
     });
 }
 
-function onChange(host, e) {
-  store.set(FormStore, { [e.target.name]: e.target.value });
-}
-
 define({
   tag: "lunar-bug-tool",
   idlist: "",
@@ -135,54 +122,5 @@ define({
   `,
 });
 
-define({
-  tag: "lunar-bug-tool-input",
-  name: "",
-  value: "",
-  render: ({ value, name }) => html`
-    <div>
-      <label>${labels[name]}</label>
-      <input
-        type="text"
-        name="${name}"
-        value="${value}"
-        oninput="${onChange}"
-      />
-    </div>
-  `.css`
-    label {
-      display: block;
-      color: white;
-    }
-    input {
-      display: block;
-      margin-bottom: 1rem;
-    }
-  `,
-});
-
-define({
-  tag: "lunar-bug-tool-textarea",
-  name: "",
-  value: "",
-  render: ({ value, name }) => html`
-    <div>
-      <label>${labels[name]}</label>
-      <textarea
-        type="text"
-        name="${name}"
-        value="${value}"
-        oninput="${onChange}"
-      ></textarea>
-    </div>
-  `.css`
-    label {
-      display: block;
-      color: white;
-    }
-    textarea {
-      display: block;
-      margin-bottom: 1rem;
-    }
-  `,
-});
+Input.create();
+TextArea.create();
