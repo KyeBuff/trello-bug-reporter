@@ -20,20 +20,6 @@ const FormStore = {
   desc: "",
 };
 
-const createRequest = function (cardId) {
-  var request = new XMLHttpRequest();
-  request.responseType = "json";
-  request.onreadystatechange = function () {
-    // When we have a response back from the server we want to share it!
-    // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/response
-    if (request.readyState === 4) {
-      console.log(`Successfully uploaded at: ${request.response.date}`);
-    }
-  };
-  request.open("POST", `https://api.trello.com/1/cards/${cardId}/attachments/`);
-  return request;
-};
-
 function getPayload() {
   // Markdown
   const desc = `
