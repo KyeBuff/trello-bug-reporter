@@ -9,15 +9,25 @@ import { createTrelloCard } from "./api/trello";
 import Form from "./components/molecules/Form";
 import BugIcon from "../public/bug.svg";
 import FormToggle from "./components/molecules/FormToggle";
+import Text from "./components/atoms/Text";
 
 function App() {
   const [showForm, setShowForm] = useState(false);
+  const [error, setError] = useState("");
   const [formState, setForm] = useState({
     name: "",
     description: "",
     expectedBehaviour: "",
     priority: "",
   });
+
+  const validators = {
+    name: formState.name.length > 0,
+    description: formState.description.length > 0,
+    priority: formState.priority.length > 0,
+  };
+
+  const isValid = Object.values(validators).every((v) => v);
 
   const onChange = useCallback((e) => {
     const { id, value } = e.target;
@@ -32,9 +42,14 @@ function App() {
     (e) => {
       e.preventDefault();
 
+      if (!isValid) {
+        setError("Please fill out all fields");
+        return;
+      }
+
       createTrelloCard(formState);
     },
-    [formState]
+    [formState, isValid]
   );
 
   return (
@@ -48,7 +63,7 @@ function App() {
           >
             Close
           </Button>
-          <FormGroup>
+          <FormGroup error={!!(error && !validators.name)}>
             <Input
               onChange={onChange}
               type="text"
@@ -56,7 +71,7 @@ function App() {
               placeholder="Title"
             />
           </FormGroup>
-          <FormGroup>
+          <FormGroup error={!!(error && !validators.description)}>
             <TextArea
               onChange={onChange}
               id="description"
@@ -71,7 +86,7 @@ function App() {
             />
           </FormGroup>
 
-          <FormGroup>
+          <FormGroup error={!!(error && !validators.priority)}>
             <Select onChange={onChange} id="priority">
               <option value="" disabled selected>
                 Priority
@@ -82,6 +97,8 @@ function App() {
               <option value="critical">Critical</option>
             </Select>
           </FormGroup>
+
+          {error ? <Text>{error}</Text> : null}
 
           <Button type="submit">Create bug ticket</Button>
         </Form>
