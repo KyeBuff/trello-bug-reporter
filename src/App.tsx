@@ -50,6 +50,7 @@ function App() {
       }
 
       setShowForm(false);
+      setError("");
 
       createTrelloCard(formState).then(() => {
         setSuccess(true);
