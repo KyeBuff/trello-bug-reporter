@@ -52,6 +52,20 @@ function App() {
     [formState, isValid]
   );
 
+  useEffect(() => {
+    const escListener = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setShowForm(false);
+      }
+    };
+
+    document.addEventListener("keydown", escListener);
+
+    return () => {
+      document.removeEventListener("keydown", escListener);
+    };
+  }, []);
+
   return (
     <>
       {showForm ? (
