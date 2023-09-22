@@ -6,13 +6,14 @@ import Select from "./components/atoms/Select";
 import TextArea from "./components/atoms/TextArea";
 import FormGroup from "./components/molecules/FormGroup";
 import { createTrelloCard } from "./api/trello";
+import Form from "./components/molecules/Form";
 
 function App() {
   const [formState, setForm] = useState({
     name: "",
     description: "",
     expectedBehaviour: "",
-    priority: "low",
+    priority: "",
   });
 
   const onChange = useCallback((e) => {
@@ -35,23 +36,35 @@ function App() {
 
   return (
     <>
-      <form onSubmit={onSubmit}>
+      <Form onSubmit={onSubmit}>
         <FormGroup>
-          <label htmlFor="name">Title</label>
-          <Input onChange={onChange} type="text" id="name" />
+          <Input
+            onChange={onChange}
+            type="text"
+            id="name"
+            placeholder="Title"
+          />
         </FormGroup>
         <FormGroup>
-          <label htmlFor="description">Description</label>
-          <TextArea onChange={onChange} id="description" />
+          <TextArea
+            onChange={onChange}
+            id="description"
+            placeholder="Description"
+          />
         </FormGroup>
         <FormGroup>
-          <label htmlFor="expectedBehaviour">Expected behaviour</label>
-          <TextArea onChange={onChange} id="expectedBehaviour" />
+          <TextArea
+            onChange={onChange}
+            id="expectedBehaviour"
+            placeholder="Expected behaviour"
+          />
         </FormGroup>
 
         <FormGroup>
-          <label htmlFor="priority">Priority</label>
           <Select onChange={onChange} id="priority">
+            <option value="" disabled selected>
+              Priority
+            </option>
             <option value="low">Low</option>
             <option value="medium">Medium</option>
             <option value="high">High</option>
@@ -60,7 +73,7 @@ function App() {
         </FormGroup>
 
         <Button type="submit">Create bug ticket</Button>
-      </form>
+      </Form>
     </>
   );
 }

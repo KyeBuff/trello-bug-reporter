@@ -1,12 +1,13 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const TextArea = styled.textarea`
-    width: 100%;
-    height: 100px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 5px;
+  display: block;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 
+  min-height: 100px;
+  resize: none;
 `;
 
 export default TextArea;
