@@ -1,35 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useCallback, useState } from "react";
+import "./App.css";
+import Button from "./components/atoms/Button";
+import Input from "./components/atoms/Input";
+import Select from "./components/atoms/Select";
+import TextArea from "./components/atoms/TextArea";
+import FormGroup from "./components/molecules/FormGroup";
+import { createTrelloCard } from "./api/trello";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const formState = useState({});
+
+  const onSubmit = useCallback((e) => {
+    e.preventDefault();
+
+    createTrelloCard(formState);
+  }, []);
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <form onSubmit={onSubmit}>
+        <FormGroup>
+          <label htmlFor="name">Title</label>
+          <Input type="text" id="name" />
+        </FormGroup>
+        <FormGroup>
+          <label htmlFor="description">Description</label>
+          <TextArea id="description" />
+        </FormGroup>
+
+        <FormGroup>
+          <label htmlFor="priority">Priority</label>
+          <Select id="priority">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+            <option value="critical">Critical</option>
+          </Select>
+        </FormGroup>
+
+        <Button type="submit">Create bug ticket</Button>
+      </form>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
