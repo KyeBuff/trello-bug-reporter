@@ -1,50 +1,27 @@
-# Lunar Bug Reporting
-This is a package created to practice building a TypeScript package with Vite.
+# React + TypeScript + Vite
 
-# Usage
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+
+- Configure the top-level `parserOptions` property like this:
 
 ```js
-import 'lunar-bug-tool';
+   parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: ['./tsconfig.json', './tsconfig.node.json'],
+    tsconfigRootDir: __dirname,
+   },
 ```
 
-# Build and testing process
-
-In this repo, build changes to update the `/dist` folder.
-
-```
-npm run build 
-
-// or
-
-yarn build
-```
-
-# Import this package into a local project
-
-## Install Yalc
-
-Yalc appears to be the most efficient way to publish packages changes locally and to pull them into another project.
-
-```
-npm i -g yalc
-
-// or
-
-yarn global add yalc
-```
-
-## Publish changes from the package
-
-This is a local publish only, it does not make it to NPM's registry.
-
-```
-yalc publish --push
-```
-
-## Add the published package to a project
-
-For example in the Sage folder or in a folder with package.json.
-
-```
-yalc add lunar-bug-tool
-```
+- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
+- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
