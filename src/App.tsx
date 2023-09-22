@@ -133,6 +133,7 @@ function App() {
             bg={success ? "green" : "#485b9c"}
           >
             <img src={success ? TickIcon : BugIcon} alt="Bug icon" />
+            {success && <span>Ticket created</span>}
           </Button>
         </FormToggle>
       )}
