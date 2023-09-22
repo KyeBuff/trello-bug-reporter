@@ -10,8 +10,8 @@ const apiCreds = `key=${key}&token=${token}`;
 function formatPayload(form) {
   // Markdown
   const desc = `
-  **Name:** ${form.name}
-  **Description:** ${form.desc}
+  **Name:** ${form.title}
+  **Description:** ${form.description}
   **Expected Behaviour:** ${form.expectedBehaviour}
   `;
 

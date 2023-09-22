@@ -8,7 +8,21 @@ import FormGroup from "./components/molecules/FormGroup";
 import { createTrelloCard } from "./api/trello";
 
 function App() {
-  const formState = useState({});
+  const [formState, setForm] = useState({
+    name: "",
+    description: "",
+    expectedBehaviour: "",
+    priority: "low",
+  });
+
+  const onChange = useCallback((e) => {
+    const { id, value } = e.target;
+
+    setForm((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  }, []);
 
   const onSubmit = useCallback((e) => {
     e.preventDefault();
@@ -20,17 +34,21 @@ function App() {
     <>
       <form onSubmit={onSubmit}>
         <FormGroup>
-          <label htmlFor="name">Title</label>
-          <Input type="text" id="name" />
+          <label htmlFor="title">Title</label>
+          <Input onChange={onChange} type="text" id="title" />
         </FormGroup>
         <FormGroup>
           <label htmlFor="description">Description</label>
-          <TextArea id="description" />
+          <TextArea onChange={onChange} id="description" />
+        </FormGroup>
+        <FormGroup>
+          <label htmlFor="expectedBehaviour">Expected behaviour</label>
+          <TextArea onChange={onChange} id="expectedBehaviour" />
         </FormGroup>
 
         <FormGroup>
           <label htmlFor="priority">Priority</label>
-          <Select id="priority">
+          <Select onChange={onChange} id="priority">
             <option value="low">Low</option>
             <option value="medium">Medium</option>
             <option value="high">High</option>
