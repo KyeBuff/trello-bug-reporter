@@ -55,7 +55,7 @@ const createTrelloCard = (form) => {
 
   const payload = formatPayload(form);
 
-  fetch(url, {
+  return fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -64,14 +64,14 @@ const createTrelloCard = (form) => {
   })
     .then((res) => res.json())
     .then((res) => {
-      console.log(res);
       if (checkIfBrowserSupported()) {
-        takeScreenshot()
+        return takeScreenshot()
           .then(convertScreenshotToPng)
           .then((screenshot) => {
             uploadScreenshot(res.id, screenshot);
           });
       }
+      return res;
     });
 };
 

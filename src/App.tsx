@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import "./App.css";
 import Button from "./components/atoms/Button";
 import Input from "./components/atoms/Input";
@@ -8,11 +8,13 @@ import FormGroup from "./components/molecules/FormGroup";
 import { createTrelloCard } from "./api/trello";
 import Form from "./components/molecules/Form";
 import BugIcon from "../public/bug.svg";
+import TickIcon from "../public/tick.svg";
 import FormToggle from "./components/molecules/FormToggle";
 import Text from "./components/atoms/Text";
 
 function App() {
   const [showForm, setShowForm] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
   const [formState, setForm] = useState({
     name: "",
@@ -47,7 +49,15 @@ function App() {
         return;
       }
 
-      createTrelloCard(formState);
+      setShowForm(false);
+
+      createTrelloCard(formState).then(() => {
+        setSuccess(true);
+
+        setTimeout(() => {
+          setSuccess(false);
+        }, 5000);
+      });
     },
     [formState, isValid]
   );
@@ -118,8 +128,11 @@ function App() {
         </Form>
       ) : (
         <FormToggle>
-          <Button onClick={() => setShowForm(true)} bg="#485b9c">
-            <img src={BugIcon} alt="Bug icon" />
+          <Button
+            onClick={() => setShowForm(true)}
+            bg={success ? "green" : "#485b9c"}
+          >
+            <img src={success ? TickIcon : BugIcon} alt="Bug icon" />
           </Button>
         </FormToggle>
       )}
