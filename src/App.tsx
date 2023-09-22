@@ -24,18 +24,21 @@ function App() {
     }));
   }, []);
 
-  const onSubmit = useCallback((e) => {
-    e.preventDefault();
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
 
-    createTrelloCard(formState);
-  }, []);
+      createTrelloCard(formState);
+    },
+    [formState]
+  );
 
   return (
     <>
       <form onSubmit={onSubmit}>
         <FormGroup>
-          <label htmlFor="title">Title</label>
-          <Input onChange={onChange} type="text" id="title" />
+          <label htmlFor="name">Title</label>
+          <Input onChange={onChange} type="text" id="name" />
         </FormGroup>
         <FormGroup>
           <label htmlFor="description">Description</label>
