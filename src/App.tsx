@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  FormEvent,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import "./App.css";
 import Button from "./components/atoms/Button";
 import Input from "./components/atoms/Input";
@@ -41,8 +47,8 @@ function App() {
 
   const isValid = Object.values(validators).every((v) => v);
 
-  const onChange = useCallback((e) => {
-    const { id, value } = e.target;
+  const onChange = useCallback((e: ChangeEvent) => {
+    const { id, value } = e.target as HTMLInputElement;
 
     setForm((prev) => ({
       ...prev,
@@ -51,7 +57,7 @@ function App() {
   }, []);
 
   const onSubmit = useCallback(
-    (e) => {
+    (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
       if (!isValid) {

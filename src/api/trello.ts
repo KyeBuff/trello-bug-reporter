@@ -7,7 +7,14 @@ const token =
 const apiRoot = "https://api.trello.com/1";
 const apiCreds = `key=${key}&token=${token}`;
 
-function formatPayload(form) {
+interface FormStateI {
+  name: string;
+  description: string;
+  expectedBehaviour: string;
+  labels: string;
+}
+
+function formatPayload(form: FormStateI) {
   // Markdown
   const desc = `
   **Description:** ${form.description}
@@ -22,6 +29,7 @@ function formatPayload(form) {
   };
 }
 
+// @ts-ignore
 function convertScreenshotToPng(screenshot) {
   return fetch(screenshot)
     .then((res) => res.blob())
@@ -30,7 +38,7 @@ function convertScreenshotToPng(screenshot) {
     });
 }
 
-function uploadScreenshot(id, screenshot) {
+function uploadScreenshot(id: string, screenshot: File) {
   const formData = new FormData();
   formData.append("name", "Screenshot");
   formData.append("file", screenshot);
@@ -49,7 +57,7 @@ function uploadScreenshot(id, screenshot) {
   request.send(formData);
 }
 
-const createTrelloCard = (form) => {
+const createTrelloCard = (form: FormStateI) => {
   //   const idList = window?.LUNAR_BUG_TOOL?.idList || "644a28be4d4825d44b85b048";
   const idList = "644a28be4d4825d44b85b048";
   const url = `${apiRoot}/cards?idList=${idList}&${apiCreds}`;
