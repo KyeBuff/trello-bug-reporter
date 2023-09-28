@@ -18,6 +18,7 @@ function formatPayload(form) {
     ...form,
     desc,
     pos: "bottom",
+    idLabels: form.labels,
   };
 }
 
@@ -75,4 +76,11 @@ const createTrelloCard = (form) => {
     });
 };
 
-export { createTrelloCard };
+const getBoardLabels = () => {
+  const idBoard = "644a2880404482591ad18e38";
+  const url = `${apiRoot}/boards/${idBoard}/labels?${apiCreds}`;
+
+  return fetch(url).then((res) => res.json());
+};
+
+export { createTrelloCard, getBoardLabels };

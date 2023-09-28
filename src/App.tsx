@@ -5,14 +5,24 @@ import Input from "./components/atoms/Input";
 import Select from "./components/atoms/Select";
 import TextArea from "./components/atoms/TextArea";
 import FormGroup from "./components/molecules/FormGroup";
-import { createTrelloCard } from "./api/trello";
+import { createTrelloCard, getBoardLabels } from "./api/trello";
 import Form from "./components/molecules/Form";
 import BugIcon from "../public/bug.svg";
 import TickIcon from "../public/tick.svg";
 import FormToggle from "./components/molecules/FormToggle";
 import Text from "./components/atoms/Text";
+import { useStatePersist } from "use-state-persist";
+
+interface BoardLabelI {
+  id: string;
+  name: string;
+}
 
 function App() {
+  const [boardLabels, setBoardLabels] = useStatePersist<BoardLabelI[]>(
+    "@labels",
+    []
+  );
   const [showForm, setShowForm] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
@@ -20,13 +30,13 @@ function App() {
     name: "",
     description: "",
     expectedBehaviour: "",
-    priority: "",
+    labels: "",
   });
 
   const validators = {
     name: formState.name.length > 0,
     description: formState.description.length > 0,
-    priority: formState.priority.length > 0,
+    labels: formState.labels.length > 0,
   };
 
   const isValid = Object.values(validators).every((v) => v);
@@ -77,6 +87,14 @@ function App() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!boardLabels.length) {
+      getBoardLabels().then((json) => {
+        setBoardLabels(json.filter((label: BoardLabelI) => !!label.name));
+      });
+    }
+  });
+
   return (
     <>
       {showForm ? (
@@ -111,17 +129,18 @@ function App() {
             />
           </FormGroup>
 
-          <FormGroup error={!!(error && !validators.priority)}>
-            <Select onChange={onChange} id="priority">
-              <option value="" disabled selected>
-                Priority
-              </option>
-              <option value="low">Low</option>
-              <option value="medium">Medium</option>
-              <option value="high">High</option>
-              <option value="critical">Critical</option>
-            </Select>
-          </FormGroup>
+          {boardLabels.length ? (
+            <FormGroup error={!!(error && !validators.labels)}>
+              <Select onChange={onChange} id="labels">
+                <option value="" disabled selected>
+                  Label
+                </option>
+                {boardLabels.map((label) => (
+                  <option value={label.id}>{label.name}</option>
+                ))}
+              </Select>
+            </FormGroup>
+          ) : null}
 
           {error ? <Text>{error}</Text> : null}
 

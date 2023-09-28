@@ -13,6 +13,7 @@ const Form = styled.form`
 
   background-color: #485b9c;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
 
   button[type="submit"] {
     margin-top: 1rem;
