@@ -24,7 +24,17 @@ interface BoardLabelI {
   name: string;
 }
 
-function App() {
+function App({
+  boardId,
+  listId,
+  token,
+  key,
+}: {
+  boardId: string;
+  listId: string;
+  token: string;
+  key: string;
+}) {
   const [boardLabels, setBoardLabels] = useStatePersist<BoardLabelI[]>(
     "@labels",
     []
@@ -68,7 +78,14 @@ function App() {
       setShowForm(false);
       setError("");
 
-      createTrelloCard(formState).then(() => {
+      createTrelloCard(
+        {
+          listId,
+          token,
+          key,
+        },
+        formState
+      ).then(() => {
         setSuccess(true);
 
         setTimeout(() => {
@@ -95,7 +112,11 @@ function App() {
 
   useEffect(() => {
     if (!boardLabels.length) {
-      getBoardLabels().then((json) => {
+      getBoardLabels({
+        boardId,
+        token,
+        key,
+      }).then((json) => {
         setBoardLabels(json.filter((label: BoardLabelI) => !!label.name));
       });
     }
