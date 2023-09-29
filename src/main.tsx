@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
-import "./index.css";
+import "./App.css";
 
 const root = document.createElement("div");
 
@@ -30,9 +30,10 @@ const init = (props: Props) => {
   if (!props.listId) {
     throw new Error("Missing Trello listId");
   }
+
   ReactDOM.createRoot(root!).render(
     <React.StrictMode>
-      <App {...props} />
+      <App trelloKey={props.key} {...props} />
     </React.StrictMode>
   );
 };

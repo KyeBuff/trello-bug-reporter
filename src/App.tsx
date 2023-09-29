@@ -5,7 +5,6 @@ import {
   useEffect,
   useState,
 } from "react";
-import "./App.css";
 import Button from "./components/atoms/Button";
 import Input from "./components/atoms/Input";
 import Select from "./components/atoms/Select";
@@ -28,12 +27,12 @@ function App({
   boardId,
   listId,
   token,
-  key,
+  trelloKey,
 }: {
   boardId: string;
   listId: string;
   token: string;
-  key: string;
+  trelloKey: string;
 }) {
   const [boardLabels, setBoardLabels] = useStatePersist<BoardLabelI[]>(
     "@labels",
@@ -82,7 +81,7 @@ function App({
         {
           listId,
           token,
-          key,
+          key: trelloKey,
         },
         formState
       ).then(() => {
@@ -115,7 +114,7 @@ function App({
       getBoardLabels({
         boardId,
         token,
-        key,
+        key: trelloKey,
       }).then((json) => {
         setBoardLabels(json.filter((label: BoardLabelI) => !!label.name));
       });
@@ -125,7 +124,7 @@ function App({
   return (
     <>
       {showForm ? (
-        <Form onSubmit={onSubmit}>
+        <Form className="bug-tool__form" onSubmit={onSubmit}>
           <Button
             bg="transparent"
             color="white"

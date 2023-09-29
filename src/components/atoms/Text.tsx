@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 const Text = styled.p`
-  color: white;
+  all: revert !important;
+  color: white !important;
 `;
 
 export default Text;

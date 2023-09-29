@@ -1,32 +1,32 @@
 import styled from "styled-components";
 
 const FormToggle = styled.div`
-  position: fixed;
-  right: -1rem;
-  bottom: calc(50% - 0.5rem);
-  background-color: #485b9c;
-  border-radius: 4px;
-  padding-right: 1rem;
+  position: fixed !important;
+  right: -1rem !important;
+  bottom: calc(50% - 0.5rem) !important;
+  background-color: #485b9c !important;
+  border-radius: 4px !important;
+  padding-right: 1rem !important;
 
   button {
-    display: flex;
-    align-items: center;
-    gap: 0.33rem;
-    font-weight: bold;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.33rem !important;
+    font-weight: bold !important;
   }
 
   img {
-    color: #fff;
-    width: 1.5rem;
-    padding: 0.25rem;
+    color: #fff !important;
+    width: 1.5rem !important;
+    padding: 0.25rem !important;
 
-    transition: transform 0.2s ease-in-out;
-    transform: scale(1);
+    transition: transform 0.2s ease-in-out !important;
+    transform: scale(1) !important;
   }
 
   &:hover {
     img {
-      transform: scale(1.1);
+      transform: scale(1.1) !important;
     }
   }
 `;
