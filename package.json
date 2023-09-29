@@ -1,8 +1,9 @@
 {
   "name": "bug-tool",
   "private": false,
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
+  "main": "./dist/lunar-bug-tool/es.js",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
