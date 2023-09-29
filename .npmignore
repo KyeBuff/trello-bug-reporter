@@ -1,0 +1,8 @@
+test.js
+index.html
+.vscode/
+.tsconfig.json
+.tsconfig.node.json
+vite.config.ts
+.gitignore
+eslintrc.cjs
