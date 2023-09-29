@@ -19,7 +19,7 @@
     "noFallthroughCasesInSwitch": true,
     "declaration": true,
     "emitDeclarationOnly": true,
-    "outFile": "index"
+    "outFile": "./dist/lunar-bug-tool.es.d.ts"
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

@@ -1,3 +1,5 @@
+declare module "bug-tool";
+
 /// <reference types="react" />
 /// <reference types="react" />
 declare module "components/atoms/Button" {
