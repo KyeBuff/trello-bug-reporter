@@ -1,7 +1,7 @@
 {
   "name": "bug-tool",
   "private": false,
-  "version": "1.0.4",
+  "version": "1.0.5",
   "type": "module",
   "main": "./dist/lunar-bug-tool.es.js",
   "types": "./dist/lunar-bug-tool.es.d.ts",
