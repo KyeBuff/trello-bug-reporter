@@ -22,7 +22,7 @@
     "url": "https://github.com/KyeBuff/trello-bug-reporter"
   },
   "private": false,
-  "version": "1.0.7",
+  "version": "1.0.8",
   "type": "module",
   "main": "./dist/lunar-bug-tool.es.js",
   "types": "./dist/lunar-bug-tool.es.d.ts",
