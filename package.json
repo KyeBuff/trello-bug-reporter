@@ -14,7 +14,7 @@
     "asana"
   ],
   "private": false,
-  "version": "1.0.5",
+  "version": "1.0.6",
   "type": "module",
   "main": "./dist/lunar-bug-tool.es.js",
   "types": "./dist/lunar-bug-tool.es.d.ts",
