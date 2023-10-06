@@ -21,6 +21,7 @@ import { useStatePersist } from "use-state-persist";
 interface BoardLabelI {
   id: string;
   name: string;
+  color: string;
 }
 
 function App({
@@ -51,7 +52,7 @@ function App({
   const validators = {
     name: formState.name.length > 0,
     description: formState.description.length > 0,
-    labels: formState.labels.length > 0,
+    labels: formState.labels.length > 0 || boardLabels.length === 0,
   };
 
   const isValid = Object.values(validators).every((v) => v);
@@ -116,10 +117,10 @@ function App({
         token,
         key: trelloKey,
       }).then((json) => {
-        setBoardLabels(json.filter((label: BoardLabelI) => !!label.name));
+        setBoardLabels(json);
       });
     }
-  });
+  }, []);
 
   return (
     <>
@@ -162,7 +163,7 @@ function App({
                   Label
                 </option>
                 {boardLabels.map((label) => (
-                  <option value={label.id}>{label.name}</option>
+                  <option value={label.id}>{label.name || label.color}</option>
                 ))}
               </Select>
             </FormGroup>

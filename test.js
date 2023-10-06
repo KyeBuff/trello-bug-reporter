@@ -1,9 +1,9 @@
 import BugTool from "./dist/lunar-bug-tool.es.js";
 
 BugTool.init({
-  key: "4a3fb7dc39032a123e911f41fc0c17e3",
+  key: "0e338908288db90402d7331815d8ff65",
   token:
-    "ATTA9c52ab7e727e26698f5ef71b9c2a1102cf0e598221b773cbfd549376ddc516661169EF54",
-  boardId: "644a2880404482591ad18e38",
-  listId: "644a28be4d4825d44b85b048",
+    "ATTA00b7d08fbd760275eb2e52858358a778f74b162814d87ec09ad06d93d54fc618E63AE34E",
+  boardId: "652018383a46b7448ca911ba",
+  listId: "6520183d79766e3002d54436",
 });

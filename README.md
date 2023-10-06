@@ -24,10 +24,16 @@ The bug reporter will automatically attach a screenshot to the card and assign a
 
 ## Requirements
 
-You will need to generate a Trello API key and token. You can do so using Trello's [New Power-Up or Integration
+You will need to generate a Trello API key and secret. You can do so using Trello's [New Power-Up or Integration
 form](https://trello.com/power-ups/admin/new).
 
 Your API credentials will be specific to your chosen workspace.
+
+Once you have generated your key and secret pair. You will need to manually generate a token which can be done by clicking on the `Token` link as shown below.
+
+<img src="./README_assets/token_generation.png" alt="Trello's power up form showing how to manually generate a token">
+
+Use the generated token and key to [initialise the bug reporter](#usage).
 
 ### Specify a Trello board and list
 
@@ -70,3 +76,7 @@ BugTool.init({
   listId: "",
 });
 ```
+
+### Priority dropdown
+
+The bug reporter will fetch and render a dropdown of Trello labels which are used to prioritise the bug ticket.

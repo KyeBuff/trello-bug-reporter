@@ -7,3 +7,4 @@ vite.config.ts
 .gitignore
 eslintrc.cjs
 public/background.jpg
+README_assets/**/*
