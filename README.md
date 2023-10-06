@@ -31,7 +31,7 @@ Your API credentials will be specific to your chosen workspace.
 
 Once you have generated your key and secret pair. You will need to manually generate a token which can be done by clicking on the `Token` link as shown below.
 
-<img src="./README_assets/token_generation.png" alt="Trello's power up form showing how to manually generate a token">
+<img src="https://github.com/KyeBuff/trello-bug-reporter/raw/main/README_assets/token_generation.png" alt="Trello's power up form showing how to manually generate a token">
 
 Use the generated token and key to [initialise the bug reporter](#usage).
 
