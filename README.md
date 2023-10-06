@@ -1,31 +1,72 @@
-# React + TypeScript + Vite
+# Trello Bug Reporter
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple bug reporter for Trello which allows you to automatically create bug report cards in Trello.
 
-Currently, two official plugins are available:
+The bug reporter will automatically attach a screenshot to the card and assign a priority to the card.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Table of Contents
 
-## Expanding the ESLint configuration
+- [Features](#features)
+- [Requirements](#requirements)
+  - [Specify a Trello board and list](#specify-a-trello-board-and-list)
+  - [Board ID](#board-id)
+  - [List ID](#list-id)
+- [Installation](#installation)
+- [Usage](#usage)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Features
 
-- Configure the top-level `parserOptions` property like this:
+- [x] Automatically generate a bug report card in Trello
+- [x] Automatically attach a screenshot to the bug report card
+- [x] Assign a priority to the bug report card
+- [] Automatically attach a log file to the bug report card
+- [] Automatically attach a video to the bug report card
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+## Requirements
+
+You will need to generate a Trello API key and token. You can do so using Trello's [New Power-Up or Integration
+form](https://trello.com/power-ups/admin/new).
+
+Your API credentials will be specific to your chosen workspace.
+
+### Specify a Trello board and list
+
+You will need to specify a board and list to which the bug reports will be sent. You can do so by creating a new board and list in Trello (or by using an existing board).
+
+### Board ID
+
+You can then retrieve the board ID by appending `.json` to the end of the board URL. The board ID will be the value of the `id` property in the JSON response - this will be the first ID value at the very top-right of an unformatted JSON response.
+
+URL example: `https://trello.com/b/123456789/my-board-name.json` where `https://trello.com/b/123456789/my-board-name` would be the typical URL to reach the board.
+
+### List ID
+
+You can retrieve the list ID clicking on a card in the list and exporting the card as JSON, steps below:
+
+1. Open the card
+2. Click Share at the bottom
+3. Click Export JSON
+4. Search that file for "idList"
+
+There may be multiple instances of "idList" in the JSON file - you are looking for the first instance.
+
+## Installation
+
+```bash
+npm i trello-bug-reporter
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Usage
 
-# Usage
+Once you have installed the package and you have your API key, token and Trello IDs, you can use the following code to create a bug reporter instance:
 
-## Clone this repository
+```typescript
+import BugTool from "trello-bug-reporter";
+
+BugTool.init({
+  token: "",
+  key: "",
+  boardId: "",
+  listId: "",
+});
+```

@@ -1,5 +1,18 @@
 {
-  "name": "bug-tool",
+  "name": "trello-bug-reporter",
+  "keywords": [
+    "bug",
+    "logging",
+    "log",
+    "reporter",
+    "trello",
+    "free",
+    "bugherd",
+    "bugsnag",
+    "bugzilla",
+    "jira",
+    "asana"
+  ],
   "private": false,
   "version": "1.0.5",
   "type": "module",
