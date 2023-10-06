@@ -6,3 +6,4 @@ index.html
 vite.config.ts
 .gitignore
 eslintrc.cjs
+public/background.jpg
