@@ -1,6 +1,6 @@
 # Trello Bug Reporter
 
-<div style="position: relative; padding-bottom: 54.0625%; height: 0;"><iframe src="https://www.loom.com/embed/b8689a7f9f9841778caa91542c9ae903?sid=857c96db-93e3-457e-a2be-66971229dd16" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
+https://www.loom.com/share/b8689a7f9f9841778caa91542c9ae903?sid=4aac93bf-f728-4e4d-ba10-c5aa44982c8c
 
 A simple bug reporter for Trello which allows you to automatically create bug report cards in Trello.
 
